@@ -5,7 +5,9 @@ React + Vite frontend for Software Application Domain project.
 ## Tech Stack
 - React
 - Vite
-- Supabase
+- Neon
+- Express
+- Node.js
 - GitHub Pages
 
 ## Setup
