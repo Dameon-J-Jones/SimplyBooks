@@ -1,18 +1,18 @@
+import "dotenv/config";
 import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
-
-dotenv.config();
+import pool from "./db.js";
 
 const app = express();
-app.use(cors());
-app.use(express.json());
 
-app.get("/health", (req, res) => {
-  res.json({ status: "ok" });
-});
+pool.connect()
+  .then(client => {
+    console.log("Connected to Neon database");
+    client.release();
+  })
+  .catch(err => {
+    console.error("Neon connection failed", err);
+  });
 
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(3001, () => {
+  console.log("Server running on port 3001");
 });
