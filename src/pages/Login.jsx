@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import { useState } from "react";
 import Logo from "../components/Logo";
 import "./Login.css";
@@ -40,9 +41,17 @@ const Login = () => {
 
         {/* Extra actions */}
         <button type="button">Forgot Password</button>
-        <button type="button">Create New User</button>
+
+        
+
       </form>
+
+      <Link to="/create-account">
+          <button type="button" className="create-user-button">Create New User</button>
+      </Link>
+
     </div>
+
   );
 };
 

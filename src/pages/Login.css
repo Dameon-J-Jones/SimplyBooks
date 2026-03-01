@@ -26,3 +26,10 @@
   width: 350px;
   margin-bottom: 20px;
 }
+
+.create-user-button{
+  width: 300px;
+  margin-top: 15px;
+  padding: 10px;
+  cursor: pointer;
+}
