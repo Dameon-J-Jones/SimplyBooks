@@ -35,48 +35,6 @@ const Login = () => {
           required
         />
 
-        {/* Addr1 */}
-        <input
-          type="text"
-          placeholder="Last Name"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        {/* Addr2 */}
-        <input
-          type="text"
-          placeholder="Last Name"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        {/* City */}
-        <input
-          type="text"
-          placeholder="Last Name"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        {/* State */}
-        <input
-          type="text"
-          placeholder="Last Name"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        {/* Zip */}
-        <input
-          type="text"
-          placeholder="Last Name"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-
-
         {/* Submit */}
         <button type="submit">Login</button>
 

@@ -1,10 +1,25 @@
-import { Routes, Route } from 'react-router-dom';
-import Login from "./pages/Login";
+import { Routes, Route, Navigate } from "react-router-dom";
 
-function App() {
+import Login from "./pages/Login";
+import Welcome from "./pages/welcome";
+import CreateAccount from "./pages/CreateAccount";
+
+export default function App() {
   return (
-    <Login />
+
+      <Routes>
+        {/* default route */}
+
+
+        {/* pages */}
+        <Route path="/" element={<Welcome />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/create-account" element={<CreateAccount />} />
+
+        {/* catch-all */}
+        <Route path="*" element={<h1 style={{ color: "black" }}>404 Not Found</h1>} />
+      </Routes>
+ 
   );
 }
 
-export default App;
