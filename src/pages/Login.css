@@ -33,3 +33,9 @@
   padding: 10px;
   cursor: pointer;
 }
+
+.user-type{
+  width: 300px;
+  margin-top: 15px;
+  padding: 10px;
+}
