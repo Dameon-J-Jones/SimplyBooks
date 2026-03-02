@@ -1,40 +1,39 @@
 import { useState } from "react";
 import Logo from "../components/Logo";
-import "./Login.css";
+import "./Page.css";
 
-const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+const CreateAccount = () => {
+  const [firstName, setfirstName] = useState("");
+  const [lastName, setlastName] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({ username, password });
-
+    console.log({ firstName, lastName });
     // TODO: send to backend, probably shouldn't put username and password in the console log
   };
 
   return (
-    <div className="login-page">
+    <div className="page">
       <Logo />
-      <form onSubmit={handleSubmit} className="login-form">
-        {/* Username */}
+
+      <form onSubmit={handleSubmit} className="page-form">
+        {/* fName */}
         <input
           type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          placeholder="First Name"
+          value={firstName}
+          onChange={(e) => setfirstName(e.target.value)}
           required
         />
 
-        {/* Password */}
+        {/* lName */}
         <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          type="text"
+          placeholder="Last Name"
+          value={lastName}
+          onChange={(e) => setlastName(e.target.value)}
           required
         />
-
         {/* Addr1 */}
         <input
           type="text"
@@ -76,18 +75,15 @@ const Login = () => {
           required
         />
 
-
         {/* Submit */}
         <button type="submit">Login</button>
 
         {/* Extra actions */}
         <button type="button">Forgot Password</button>
-        <button type="button" >Create New User</button>
+        <button type="button">Create New User</button>
       </form>
     </div>
-    
-    
   );
 };
 
-export default Login;
+export default CreateAccount;
