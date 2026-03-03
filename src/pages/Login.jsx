@@ -22,8 +22,14 @@ const Login = () => {
   };
 
   return (
+    <div className="page-margin">
+      <div className="top-bar">
+        <div className="top-left"><Logo/></div> <div className="top-right"><Logo/></div>
+        <text className="icon">ds</text>
+      </div>
+      
     <div className="login-page">
-      <Logo />
+      
 
       <form onSubmit={handleSubmit} className="login-form">
       
@@ -73,7 +79,7 @@ const Login = () => {
       </Link>
 
     </div>
-
+    </div>
   );
 };
 
