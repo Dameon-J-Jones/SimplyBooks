@@ -1,8 +1,11 @@
 import "dotenv/config";
 import express from "express";
 import pool from "./db.js";
-
+import "dotenv/config";
 const app = express();
+
+app.use(express.json());
+
 
 pool.connect()
   .then(client => {
