@@ -25,7 +25,7 @@ const Login = () => {
     <div className="page-margin">
       <div className="top-bar">
         <div className="top-left"><Logo/></div> <div className="top-right"><Logo/></div>
-        <text className="icon">ds</text>
+        <text className="icon" id="initials">AA</text>
       </div>
       
     <div className="login-page">
