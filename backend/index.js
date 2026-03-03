@@ -30,15 +30,40 @@ app.get("/users", async (req, res) => {
 
 
 //adds users to array 
-app.post("/users", async (req, res) => {
+app.post("/create-users", async (req, res) => {
 
   try {
-    const hashedPassword = await hashPassword(req.body.password);
+
+    const {
+      userType,
+      firstName,
+      lastName,
+      username,
+      password,
+      address,
+      city,
+      state,
+      zip,
+      dob,
+      securityAnswer
+    } = req.body;
+
+    const hashedPassword = await hashPassword(password);
 
     const user = {
-      name: req.body.name,
-      password: hashedPassword
+      userType,
+      firstName,
+      lastName,
+      username,
+      password: hashedPassword,
+      address,
+      city,
+      state,
+      zip,
+      dob,
+      securityAnswer
     };
+
 
     console.log("Hashed:", hashedPassword);
 

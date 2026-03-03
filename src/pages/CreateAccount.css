@@ -1,25 +1,88 @@
-.logo img {
-  width: 300px; 
-  height: auto;
+.create-account-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: gray;
+  padding-top: 20px;
 }
 
-.create-account-container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 50vh;
-    background-color: gray;
-
+.buttons-container {
+  background-color: lightgray;
+  width: 600px;
+  padding: 30px;
+  border-radius: 8px;
 }
 
-.buttons-container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-     background-color: lightgray;
-     width: 300px;
-     height: 400px;
+/* THIS makes it stack nicely */
+.create-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* space between each line */
 }
 
+.create-form input,
+.create-form select {
+  padding: 8px;
+  font-size: 14px;
+}
+
+
+.create-form{
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+.create-form label{
+  display: block;
+  font-weight: 600;
+}
+
+.create-form input,
+.create-form select{
+  display: block;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+
+.success-message {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-weight: bold;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+
+
+.error-message {
+  background-color: #bc1919;
+  color: white;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-weight: bold;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+
+
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+
+.submit-button{
+  margin-top: 10px;
+  padding: 10px;
+}

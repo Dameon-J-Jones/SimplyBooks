@@ -44,11 +44,12 @@ const Login = () => {
         <button type="submit">Login</button>
 
         {/* Extra actions */}
-        <button type="button">Forgot Password</button>
-
-        
-
+       
       </form>
+      
+      <Link to="/forgot-password" >
+       <button type="button" className="forgot-password-button">Forgot Password</button>
+      </Link>
 
       <Link to="/create-account">
           <button type="button" className="create-user-button">Create New User</button>
