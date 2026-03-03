@@ -2,20 +2,15 @@ import { Link } from "react-router-dom"
 import { useState } from "react";
 import Logo from "../components/Logo";
 import "./Login.css";
-import "../../backend/PasswordCheck.js"
 
 
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [userType, setUserType] = useState("Accountant");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-      //test username and password
-           console.log({ username, password, userType});
-           // TODO: send to backend, probably shouldn't put username and password in the console log
     
     
    
@@ -26,20 +21,7 @@ const Login = () => {
       <Logo />
 
       <form onSubmit={handleSubmit} className="login-form">
-      
-      {/* UserType */}
-       <select  className="user-type"
-                value={userType}
-                onChange={(e) => setUserType(e.target.value)}
-         >
-            <option value="Accountant">Accountant</option>
-            <option value="Manager">Manager</option>
-            <option value="Administrator">Administrator</option>
-
-        </select>
-      
-      
-      
+     
        {/* Username */}
         <input
           type="text"
