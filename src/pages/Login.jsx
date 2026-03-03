@@ -2,6 +2,7 @@ import { Link } from "react-router-dom"
 import { useState } from "react";
 import Logo from "../components/Logo";
 import "./Login.css";
+import LongLogo from "../components/longLogo";
 
 
 
@@ -17,8 +18,14 @@ const Login = () => {
   };
 
   return (
+    <div className="page-margin">
+      <div className="top-bar">
+        <div className="logo"><Logo/></div>
+        <text className="icon" id="initials"></text>
+      </div>
+      
     <div className="login-page">
-      <Logo />
+      
 
       <form onSubmit={handleSubmit} className="login-form">
      
@@ -56,7 +63,7 @@ const Login = () => {
       </Link>
 
     </div>
-
+    </div>
   );
 };
 
