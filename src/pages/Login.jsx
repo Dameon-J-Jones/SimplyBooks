@@ -9,6 +9,7 @@ import LongLogo from "../components/longLogo";
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const listOfUsers = ["John", "Jane", "Jimmy"];
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -25,7 +26,11 @@ const Login = () => {
       </div>
       
     <div className="login-page">
-      
+      <ul>
+        {listOfUsers.map((user, index) =>(
+          <li key={index}>{user}</li>
+        ))}
+      </ul>
 
       <form onSubmit={handleSubmit} className="login-form">
      
