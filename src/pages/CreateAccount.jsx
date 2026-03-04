@@ -25,14 +25,14 @@ export default function CreateAccount() {
   });
 
 function checkPassword(password){
-    const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).+$/;
+    const passwordRegex = /^[A-Za-z](?=.*[A-Za-z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{7,}$/;
 
 if (!passwordRegex.test(password)) {
-  alert("Password must contain at least 1 uppercase letter, 1 number, and 1 special character.");
-  return;
+  alert("Password must be 8+ characters, start with a letter, and include a letter, number, and special character.");
+  return false;
 }
 
-return false
+return true
 }
 
 
