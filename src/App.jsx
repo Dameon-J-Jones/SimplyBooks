@@ -6,6 +6,8 @@ import CreateAccount from "./pages/CreateAccount";
 import ForgotPassword from "./pages/ForgotPassword";
 import PasswordReset from "./pages/PasswordReset";
 import AdminHomePage from "./pages/AdminHomePage";
+import ManagerHomePage from "./pages/ManagerHomePage";
+import AccountantHomePage from "./pages/AccountantHomePage";
 import UserList from "./pages/UserList";
 
 export default function App() {
@@ -22,6 +24,8 @@ export default function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/password-reset" element={<PasswordReset />} />
         <Route path="/AdminHome" element={<AdminHomePage/>}/>
+        <Route path="/ManagerHomePage" element={<ManagerHomePage/>}/>
+        <Route path="/AccountantHomePage" element={<AccountantHomePage/>}/>
         <Route path="/UserList" element={<UserList/>}/>
 
         {/* catch-all */}
