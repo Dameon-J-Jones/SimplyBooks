@@ -17,9 +17,8 @@ export default function ForgotPassword(){
     }
 
     setError("");
-    alert("Password reset request submitted. Redirecting to login..."); // placeholder
     
-    navigate("/Login");
+    navigate("/password-reset");
   };
 
     
