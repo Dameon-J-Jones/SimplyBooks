@@ -7,7 +7,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import PasswordReset from "./pages/PasswordReset";
 import AdminHomePage from "./pages/AdminHomePage";
 import UserList from "./pages/UserList";
-
+import RequireAuth from "./components/RequireAuth";
 export default function App() {
   return (
 

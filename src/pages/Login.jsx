@@ -1,22 +1,56 @@
 import { Link } from "react-router-dom"
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Logo from "../components/Logo";
 import "./Login.css";
 import LongLogo from "../components/longLogo";
+import Authcontext from "../components/AuthProvider";
+import axios from "../api/axios";
+import { useNavigate } from "react-router-dom";
 
 
+
+
+
+
+const LOGIN_URL = '/auth'
 
 const Login = () => {
+
+  const navigate = useNavigate();
+  const {setAuth} =useContext(Authcontext)
+
+
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const listOfUsers = ["John", "Jane", "Jimmy"];
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    
-   
-  };
+  console.log("SUBMIT", { username, password });
+
+  try {
+    const response = await api.post("/users/login", {
+      username,
+      password
+    });
+
+    const { user, token } = response.data;
+
+    //keep signed in after refresh
+    if (token) localStorage.setItem("token", token);
+
+    //app-wide auth state
+    setAuth({ user, token });
+
+
+    // go to home
+    navigate("/AdminHome"); // change if your route is different
+  } catch (err) {
+    console.error(err);
+  alert(err.response?.data?.message || "Login failed");
+  }
+  }
+
 
   return (
     <div className="page-margin">
@@ -26,12 +60,6 @@ const Login = () => {
       </div>
       
     <div className="login-page">
-      <ul>
-        {listOfUsers.map((user, index) =>(
-          <li key={index}>{user}</li>
-        ))}
-      </ul>
-
       <form onSubmit={handleSubmit} className="login-form">
      
        {/* Username */}
@@ -71,5 +99,4 @@ const Login = () => {
     </div>
   );
 };
-
 export default Login;

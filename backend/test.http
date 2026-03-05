@@ -1,0 +1,26 @@
+POST http://localhost:3001/create-users
+Content-Type: application/json
+
+{
+  "userType": "Accountant",
+  "firstName": "John",
+  "lastName": "Smith",
+  "username": "jsmith",
+  "password": "123",
+  "address": "123 Cherry St",
+  "city": "Atlanta",
+  "state": "GA",
+  "zip": "30060",
+  "dob": "1999-12-31",
+  "securityAnswer": "Brown"
+}
+
+
+###
+POST http://localhost:3001/users/login
+Content-Type: application/json
+
+{
+  "username": "jsmith",
+  "password": "123"
+}

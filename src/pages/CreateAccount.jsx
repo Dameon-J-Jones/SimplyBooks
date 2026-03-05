@@ -1,11 +1,15 @@
 import LongLogo from "../components/longLogo";
 import "./CreateAccount.css";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../api/axios";
 
 export default function CreateAccount() {
 
+  const userRef =useRef();
+  const errRef = useRef();
 
+   const [userFocus, setUserFocus] = useState(false) 
    const [message, setMessage] = useState("");
    const [errorMessage, setErrorMessage] = useState("");
    const navigate = useNavigate();
@@ -24,6 +28,9 @@ export default function CreateAccount() {
     securityAnswer: ""
   });
 
+
+
+ //checks password to see if it meets rules 
 function checkPassword(password){
     const passwordRegex = /^[A-Za-z](?=.*[A-Za-z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{7,}$/;
 
@@ -46,20 +53,9 @@ return true
     }
 
 
-    const response = await fetch("http://localhost:3001/create-users", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(formData)
-    });
+  const response = await api.post("/create-users", formData);
+  const data = response.data;
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      alert("Failed to create account");
-      return;
-    }
 
     console.log("User created:", data);
 

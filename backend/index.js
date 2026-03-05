@@ -4,8 +4,7 @@ import pool from "./db.js";
 import "dotenv/config";
 import cors from "cors";
 import { hashPassword, comparePassword } from "./PasswordHash.js";
-
-
+import jwt from "jsonwebtoken";
 
 
 
@@ -82,25 +81,32 @@ app.post("/create-users", async (req, res) => {
 
 //test login creditials 
 app.post("/users/login", async (req, res) => {
-  const { name, password } = req.body;
+  const { username, password } = req.body;
 
-  const user = users.find((u) => u.name === name);
+  const user = users.find((u) => u.username === username);
 
   if (!user) {
-    return res.status(400).send("Cannot find user");
+    return res.status(400).json({ message: "Cannot find user" });
   }
 
   try {
     const ok = await comparePassword(password, user.password);
 
-    if (ok) {
-      return res.send("Success");
-    } else {
-      return res.status(401).send("Not Allowed");
+    if (!ok) {
+      return res.status(401).json({ message: "Not Allowed" });
     }
+
+    return res.json({
+      message: "Success",
+      user: {
+        username: user.username,
+        role: user.userType
+      }
+    });
+
   } catch (err) {
     console.error(err);
-    return res.status(500).send();
+    return res.status(500).json({ message: "Server error" });
   }
 });
 
