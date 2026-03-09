@@ -11,8 +11,17 @@ import jwt from "jsonwebtoken";
 const app = express();
 app.use(express.json());
 
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+//YOU HAVE NO IDEA HOW LONG THIS TOOK
+//THIS SHOULD FIX THESE DAMN SERVER ERROR PROBLEMS
+//FOR THE LOVE OF ALL THAT IS HOLY ON THIS BITCH ASS EARTH
+const corsOptions = {
+  origin: "http://localhost:5173",  // frontend URL
+  methods: ["GET","POST","PUT","DELETE","OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true
+};
 
+app.use(cors(corsOptions));
 
 
 //NEED TO STORE IN DB JUST NEED FOR TESTING
@@ -28,13 +37,19 @@ app.get("/users", async (req, res) => {
 });
 
 
-//adds users to array 
+//NO MORE ADDING USERS TO ARRAY, THIS SHOULD WRITE TO DB
 app.post("/create-users", async (req, res) => {
-
   try {
+    console.log("Received body:", req.body);
+
+    // Map userType to GroupID
+    const groupMap = {
+      Accountant: 0,
+      Manager: 1,
+      Administrator: 2
+    };
 
     const {
-      userType,
       firstName,
       lastName,
       username,
@@ -43,38 +58,53 @@ app.post("/create-users", async (req, res) => {
       city,
       state,
       zip,
+      phone,
       dob,
-      securityAnswer
+      securityAnswer,
+      userType
     } = req.body;
+
+    if (!password) throw new Error("No password provided");
 
     const hashedPassword = await hashPassword(password);
 
-    const user = {
-      userType,
-      firstName,
-      lastName,
+    // Build full address string
+    const fullAddress = `${address}, ${city}, ${state}, ${zip}`;
+
+    // Insert into Postgres
+    const query = `
+      INSERT INTO "User" (
+        "UName",
+        "Phone_Number",
+        "Password",
+        "address_line1",
+        "date_of_birth",
+        "GroupID",
+        "status",
+        "created_on"
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, CURRENT_TIMESTAMP)
+      RETURNING *;
+    `;
+
+    const values = [
       username,
-      password: hashedPassword,
-      address,
-      city,
-      state,
-      zip,
+      phone,
+      hashedPassword,
+      fullAddress,
       dob,
-      securityAnswer
-    };
+      groupMap[userType],
+      0 // default status
+    ];
 
+    const result = await pool.query(query, values);
+    const newUser = result.rows[0];
 
-    console.log("Hashed:", hashedPassword);
-
-    users.push(user);
-
-    res.status(201).json(user);
-
+    console.log("User inserted into DB:", newUser);
+    res.status(201).json(newUser);
   } catch (err) {
-    console.error(err);
-    res.status(500).send();
+    console.error("CREATE USER DB ERROR:", err);
+    res.status(500).json({ message: err.message });
   }
-
 });
 
 
