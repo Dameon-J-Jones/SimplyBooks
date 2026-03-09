@@ -22,7 +22,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions)); // handle preflight requests
 
 
 //NEED TO STORE IN DB JUST NEED FOR TESTING
