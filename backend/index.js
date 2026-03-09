@@ -40,10 +40,16 @@ app.get("/users", async (req, res) => {
 //NO MORE ADDING USERS TO ARRAY, THIS SHOULD WRITE TO DB
 app.post("/create-users", async (req, res) => {
   try {
-    console.log("Received body:", req.body); // see what frontend actually sends
+    console.log("Received body:", req.body);
+
+    // Map userType to GroupID
+    const groupMap = {
+      Accountant: 0,
+      Manager: 1,
+      Administrator: 2
+    };
 
     const {
-      userType,
       firstName,
       lastName,
       username,
@@ -52,34 +58,52 @@ app.post("/create-users", async (req, res) => {
       city,
       state,
       zip,
+      phone,
       dob,
-      securityAnswer
+      securityAnswer,
+      userType
     } = req.body;
 
-    if (!password) throw new Error("No password provided"); // quick check
+    if (!password) throw new Error("No password provided");
 
     const hashedPassword = await hashPassword(password);
 
-    const user = {
-      userType,
-      firstName,
-      lastName,
+    // Build full address string
+    const fullAddress = `${address}, ${city}, ${state}, ${zip}`;
+
+    // Insert into Postgres
+    const query = `
+      INSERT INTO "User" (
+        "UName",
+        "Phone_Number",
+        "Password",
+        "address_line1",
+        "date_of_birth",
+        "GroupID",
+        "status",
+        "created_on"
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, CURRENT_TIMESTAMP)
+      RETURNING *;
+    `;
+
+    const values = [
       username,
-      password: hashedPassword,
-      address,
-      city,
-      state,
-      zip,
+      phone,
+      hashedPassword,
+      fullAddress,
       dob,
-      securityAnswer
-    };
+      groupMap[userType],
+      0 // default status
+    ];
 
-    users.push(user);
+    const result = await pool.query(query, values);
+    const newUser = result.rows[0];
 
-    res.status(201).json(user);
+    console.log("User inserted into DB:", newUser);
+    res.status(201).json(newUser);
   } catch (err) {
-    console.error("CREATE USER ERROR:", err);
-    res.status(500).json({ message: err.message }); // send error message back
+    console.error("CREATE USER DB ERROR:", err);
+    res.status(500).json({ message: err.message });
   }
 });
 

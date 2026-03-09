@@ -171,6 +171,17 @@ async function handleSubmit(e) {
               placeholder="Zip Code" required
             />
 
+            <label htmlFor="phone">Phone Number:</label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              value={formData.phone || ""}
+              onChange={handleChange}
+              placeholder="123-456-7890"
+              required
+            />
+
             <label htmlFor="dob">Date of Birth:</label>
             <input
               type="date"
