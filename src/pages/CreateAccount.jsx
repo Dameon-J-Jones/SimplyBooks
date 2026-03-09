@@ -3,6 +3,7 @@ import "./CreateAccount.css";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
+import { makeUsername } from "../utils/MakeUsername";
 
 export default function CreateAccount() {
 
@@ -43,37 +44,33 @@ return true
 }
 
 
-  async function handleSubmit(e) {
+async function handleSubmit(e) {
+  e.preventDefault();
+
+  if (!checkPassword(formData.password)) {
+    setErrorMessage(
+      "Password must have 1 uppercase, 1 number, and 1 special character."
+    );
+    return;
+  }
+
   try {
-    e.preventDefault();
+    const username = makeUsername(formData.firstName, formData.lastName);
 
-    if(!checkPassword(formData.password)){
-       setErrorMessage("Password must have 1 uppercase, 1 number, and 1 special character.");
-      return;
-    }
+    // ensure all required fields are non-empty
+    const payload = { ...formData, username };
+    console.log("Sending payload:", payload); //debug line
 
+    const response = await api.post("/create-users", payload);
+    console.log("User created:", response.data);
 
-  const response = await api.post("/create-users", formData);
-  const data = response.data;
-
-
-    console.log("User created:", data);
-
- setMessage("Account created successfully!");
-
-// Wait 2 seconds, then go to login
-setTimeout(() => {
-  navigate("/login");
-}, 2000);
-
+    setMessage("Account created successfully!");
+    setTimeout(() => navigate("/login"), 2000);
   } catch (err) {
-    console.error("Error creating account:", err);
-    alert("Server error");
+    console.error("Error creating account:", err.response?.data || err);
+    alert(err.response?.data?.message || "Server error");
   }
 }
-
-
-
 
   function handleChange(e) {
     setFormData({
@@ -122,16 +119,6 @@ setTimeout(() => {
               value={formData.lastName}
               onChange={handleChange}
               placeholder="Last name" required
-            />
-
-            <label htmlFor="username">Username:</label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-              placeholder="Username" required
             />
 
             <label htmlFor="password">Password:</label>

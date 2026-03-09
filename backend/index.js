@@ -11,8 +11,18 @@ import jwt from "jsonwebtoken";
 const app = express();
 app.use(express.json());
 
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+//YOU HAVE NO IDEA HOW LONG THIS TOOK
+//THIS SHOULD FIX THESE DAMN SERVER ERROR PROBLEMS
+//FOR THE LOVE OF ALL THAT IS HOLY ON THIS BITCH ASS EARTH
+const corsOptions = {
+  origin: "http://localhost:5173",  // frontend URL
+  methods: ["GET","POST","PUT","DELETE","OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true
+};
 
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions)); // handle preflight requests
 
 
 //NEED TO STORE IN DB JUST NEED FOR TESTING
@@ -28,10 +38,10 @@ app.get("/users", async (req, res) => {
 });
 
 
-//adds users to array 
+//NO MORE ADDING USERS TO ARRAY, THIS SHOULD WRITE TO DB
 app.post("/create-users", async (req, res) => {
-
   try {
+    console.log("Received body:", req.body); // see what frontend actually sends
 
     const {
       userType,
@@ -46,6 +56,8 @@ app.post("/create-users", async (req, res) => {
       dob,
       securityAnswer
     } = req.body;
+
+    if (!password) throw new Error("No password provided"); // quick check
 
     const hashedPassword = await hashPassword(password);
 
@@ -63,18 +75,13 @@ app.post("/create-users", async (req, res) => {
       securityAnswer
     };
 
-
-    console.log("Hashed:", hashedPassword);
-
     users.push(user);
 
     res.status(201).json(user);
-
   } catch (err) {
-    console.error(err);
-    res.status(500).send();
+    console.error("CREATE USER ERROR:", err);
+    res.status(500).json({ message: err.message }); // send error message back
   }
-
 });
 
 
