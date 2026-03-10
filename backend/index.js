@@ -113,29 +113,34 @@ app.post("/create-users", async (req, res) => {
 app.post("/users/login", async (req, res) => {
   const { username, password } = req.body;
 
-  const user = users.find((u) => u.username === username);
+  try{
+    const result = await pool.query(
+      'SELECT * FROM "User" WHERE "Uname" = $1',
+      [username]
+    );
 
-  if (!user) {
-    return res.status(400).json({ message: "Cannot find user" });
-  }
+    const user = result.rows[0];
 
-  try {
-    const ok = await comparePassword(password, user.password);
+    if (!user){
+      return res.status(400).json({ message: "Cannot find user" });
+    }
 
-    if (!ok) {
+    const ok = await comparePassword(password, user.Password);
+
+    if (!ok){
       return res.status(401).json({ message: "Not Allowed" });
     }
 
     return res.json({
       message: "Success",
       user: {
-        username: user.username,
-        role: user.userType
+        username: user.UName,
+        role: user. GroupID
       }
     });
 
   } catch (err) {
-    console.error(err);
+    console.error("LOGIN ERROR:", err)
     return res.status(500).json({ message: "Server error" });
   }
 });
