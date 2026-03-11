@@ -21,17 +21,28 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-
-//NEED TO STORE IN DB JUST NEED FOR TESTING
-const users=[];
-
-
-
-
-//returns users
+//ACTUALLY returns users now
 app.get("/users", async (req, res) => {
-  res.json(users)
+  try{
+    const result = await pool.query(`
+      SELECT
+        "UName",
+        "Phone_Number",
+        "address_line1",
+        "address_line2",
+        "GroupID",
+        "status",
+        "created_on"
+      FROM "User"
+      ORDER BY "UName";
+      `);
 
+      res.json(result.rows);
+
+  }catch (err){
+    console.error("USER LIST ERROR:", err)
+    res.status(500).json({ message: "Server error" });
+  }
 });
 
 
