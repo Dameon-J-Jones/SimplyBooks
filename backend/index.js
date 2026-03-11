@@ -42,7 +42,7 @@ app.post("/create-users", async (req, res) => {
 
     // Map userType to GroupID
     const groupMap = {
-      Accountant: 0,
+      Accountant: 0, //keep these numbers consistent between log-in and saving to database!
       Manager: 1,
       Administrator: 2
     };
@@ -67,7 +67,8 @@ app.post("/create-users", async (req, res) => {
     const hashedPassword = await hashPassword(password);
 
     // Build full address string
-    const fullAddress = `${address}, ${city}, ${state}, ${zip}`;
+    const address_line1 = address;
+    const address_line2 = `${city}, ${state}, ${zip}`;
 
     // Insert into Postgres
     const query = `
@@ -76,11 +77,12 @@ app.post("/create-users", async (req, res) => {
         "Phone_Number",
         "Password",
         "address_line1",
+        "address_line2",
         "date_of_birth",
         "GroupID",
         "status",
         "created_on"
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, CURRENT_TIMESTAMP)
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, CURRENT_TIMESTAMP)
       RETURNING *;
     `;
 
@@ -88,7 +90,8 @@ app.post("/create-users", async (req, res) => {
       username,
       phone,
       hashedPassword,
-      fullAddress,
+      address_line1,
+      address_line2,
       dob,
       groupMap[userType],
       0 // default status
