@@ -6,8 +6,6 @@ import cors from "cors";
 import { hashPassword, comparePassword } from "./PasswordHash.js";
 import jwt from "jsonwebtoken";
 
-
-
 const app = express();
 app.use(express.json());
 
@@ -115,7 +113,7 @@ app.post("/users/login", async (req, res) => {
 
   try{
     const result = await pool.query(
-      'SELECT * FROM "User" WHERE "Uname" = $1',
+      'SELECT * FROM "User" WHERE "UName" = $1',
       [username]
     );
 
@@ -135,7 +133,7 @@ app.post("/users/login", async (req, res) => {
       message: "Success",
       user: {
         username: user.UName,
-        role: user. GroupID
+        role: user.GroupID
       }
     });
 
