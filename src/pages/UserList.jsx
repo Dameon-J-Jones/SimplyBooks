@@ -40,7 +40,7 @@ const UserList = () => {
 
         return(
         <li key={user.UName}>
-          {user.UName} | {user.Phone_Number} | {user.address_line1} | {user.address_line2} | {groupMap[user.GroupID]} | {statusMap[user.status]} | {user.created_on}
+          {user.UName} | {user.Email}| {user.Phone_Number} | {user.address_line1} | {user.address_line2} | {groupMap[user.GroupID]} | {statusMap[user.status]} | {user.created_on}
         </li>
         );
       })}

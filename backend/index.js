@@ -27,6 +27,7 @@ app.get("/users", async (req, res) => {
     const result = await pool.query(`
       SELECT
         "UName",
+        "Email",
         "Phone_Number",
         "address_line1",
         "address_line2",
@@ -62,6 +63,7 @@ app.post("/create-users", async (req, res) => {
       firstName,
       lastName,
       username,
+      email,
       password,
       address,
       city,
@@ -84,6 +86,7 @@ app.post("/create-users", async (req, res) => {
     // Insert into Postgres
     const query = `
       INSERT INTO "User" (
+        "Email",
         "UName",
         "Phone_Number",
         "Password",
@@ -93,11 +96,12 @@ app.post("/create-users", async (req, res) => {
         "GroupID",
         "status",
         "created_on"
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, CURRENT_TIMESTAMP)
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, CURRENT_TIMESTAMP)
       RETURNING *;
     `;
 
     const values = [
+      email,
       username,
       phone,
       hashedPassword,
