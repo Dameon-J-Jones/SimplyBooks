@@ -6,8 +6,6 @@ import cors from "cors";
 import { hashPassword, comparePassword } from "./PasswordHash.js";
 import jwt from "jsonwebtoken";
 
-
-
 const app = express();
 app.use(express.json());
 
@@ -23,17 +21,28 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-
-//NEED TO STORE IN DB JUST NEED FOR TESTING
-const users=[];
-
-
-
-
-//returns users
+//ACTUALLY returns users now
 app.get("/users", async (req, res) => {
-  res.json(users)
+  try{
+    const result = await pool.query(`
+      SELECT
+        "UName",
+        "Phone_Number",
+        "address_line1",
+        "address_line2",
+        "GroupID",
+        "status",
+        "created_on"
+      FROM "User"
+      ORDER BY "UName";
+      `);
 
+      res.json(result.rows);
+
+  }catch (err){
+    console.error("USER LIST ERROR:", err)
+    res.status(500).json({ message: "Server error" });
+  }
 });
 
 
@@ -44,7 +53,7 @@ app.post("/create-users", async (req, res) => {
 
     // Map userType to GroupID
     const groupMap = {
-      Accountant: 0,
+      Accountant: 0, //keep these numbers consistent between log-in and saving to database!
       Manager: 1,
       Administrator: 2
     };
@@ -69,7 +78,8 @@ app.post("/create-users", async (req, res) => {
     const hashedPassword = await hashPassword(password);
 
     // Build full address string
-    const fullAddress = `${address}, ${city}, ${state}, ${zip}`;
+    const address_line1 = address;
+    const address_line2 = `${city}, ${state}, ${zip}`;
 
     // Insert into Postgres
     const query = `
@@ -78,11 +88,12 @@ app.post("/create-users", async (req, res) => {
         "Phone_Number",
         "Password",
         "address_line1",
+        "address_line2",
         "date_of_birth",
         "GroupID",
         "status",
         "created_on"
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, CURRENT_TIMESTAMP)
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, CURRENT_TIMESTAMP)
       RETURNING *;
     `;
 
@@ -90,7 +101,8 @@ app.post("/create-users", async (req, res) => {
       username,
       phone,
       hashedPassword,
-      fullAddress,
+      address_line1,
+      address_line2,
       dob,
       groupMap[userType],
       0 // default status
@@ -113,29 +125,34 @@ app.post("/create-users", async (req, res) => {
 app.post("/users/login", async (req, res) => {
   const { username, password } = req.body;
 
-  const user = users.find((u) => u.username === username);
+  try{
+    const result = await pool.query(
+      'SELECT * FROM "User" WHERE "UName" = $1',
+      [username]
+    );
 
-  if (!user) {
-    return res.status(400).json({ message: "Cannot find user" });
-  }
+    const user = result.rows[0];
 
-  try {
-    const ok = await comparePassword(password, user.password);
+    if (!user){
+      return res.status(400).json({ message: "Cannot find user" });
+    }
 
-    if (!ok) {
+    const ok = await comparePassword(password, user.Password);
+
+    if (!ok){
       return res.status(401).json({ message: "Not Allowed" });
     }
 
     return res.json({
       message: "Success",
       user: {
-        username: user.username,
-        role: user.userType
+        username: user.UName,
+        role: user.GroupID
       }
     });
 
   } catch (err) {
-    console.error(err);
+    console.error("LOGIN ERROR:", err)
     return res.status(500).json({ message: "Server error" });
   }
 });

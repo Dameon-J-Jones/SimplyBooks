@@ -24,8 +24,8 @@ export default function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/password-reset" element={<PasswordReset />} />
         <Route path="/AdminHome" element={<AdminHomePage/>}/>
-        <Route path="/ManagerHomePage" element={<ManagerHomePage/>}/>
-        <Route path="/AccountantHomePage" element={<AccountantHomePage/>}/>
+        <Route path="/ManagerHome" element={<ManagerHomePage/>}/>
+        <Route path="/AccountantHome" element={<AccountantHomePage/>}/>
         <Route path="/UserList" element={<UserList/>}/>
 
         {/* catch-all */}

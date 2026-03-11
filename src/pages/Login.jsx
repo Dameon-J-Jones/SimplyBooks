@@ -4,13 +4,8 @@ import Logo from "../components/Logo";
 import "./Login.css";
 import LongLogo from "../components/longLogo";
 import Authcontext from "../components/AuthProvider";
-import axios from "../api/axios";
+import api from "../api/axios";
 import { useNavigate } from "react-router-dom";
-
-
-
-
-
 
 const LOGIN_URL = '/auth'
 
@@ -18,8 +13,6 @@ const Login = () => {
 
   const navigate = useNavigate();
   const {setAuth} =useContext(Authcontext)
-
-
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -34,17 +27,24 @@ const Login = () => {
       password
     });
 
-    const { user, token } = response.data;
+    const { user, /*token*/ } = response.data;
 
     //keep signed in after refresh
-    if (token) localStorage.setItem("token", token);
+    //if (token) localStorage.setItem("token", token);
 
     //app-wide auth state
-    setAuth({ user, token });
+    setAuth({ user, /*token*/ });
 
 
-    // go to home
-    navigate("/AdminHome"); // change if your route is different
+    // go to home based on role
+    const roleRoutes = {
+      0: "/AccountantHome",
+      1: "/ManagerHome",
+      2: "/AdminHome"
+    };
+
+    navigate(roleRoutes[user.role] || "/");
+
   } catch (err) {
     console.error(err);
   alert(err.response?.data?.message || "Login failed");
