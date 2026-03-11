@@ -20,11 +20,13 @@ export default function CreateAccount() {
     firstName: "",
     lastName: "",
     username: "",
+    email: "",
     password: "",
     address: "",
     city: "",
     state: "",
     zip: "",
+    phone: "",
     dob: "",
     securityAnswer: ""
   });
@@ -100,6 +102,17 @@ async function handleSubmit(e) {
               <option value="Manager">Manager</option>
               <option value="Administrator">Administrator</option>
             </select>
+
+            <label htmlFor="email">Email:</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="you@example.com"
+              required
+            />
 
             <label htmlFor="firstName">First Name:</label>
             <input
