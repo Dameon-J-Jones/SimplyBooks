@@ -43,7 +43,7 @@
 .logo{
   display: flex;
   justify-content: center;
-  align-items: top;
+  align-items: center;
   margin-top: 60px;
 }
 

@@ -63,7 +63,7 @@ async function handleSubmit(e) {
     const payload = { ...formData, username };
     console.log("Sending payload:", payload); //debug line
 
-    const response = await api.post("/create-users", payload);
+    const response = await api.post("/users", payload);
     console.log("User created:", response.data);
 
     setMessage("Account created successfully!");
