@@ -22,7 +22,7 @@ const Login = () => {
   console.log("SUBMIT", { username, password });
 
   try {
-    const response = await api.post("/users/login", {
+    const response = await api.post("/auth", {
       username,
       password
     });
