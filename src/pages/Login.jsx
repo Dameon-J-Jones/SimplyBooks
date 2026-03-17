@@ -6,14 +6,15 @@ import LongLogo from "../components/longLogo";
 import Authcontext from "../components/AuthProvider";
 import api from "../api/axios";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../components/UserContext";
 
 const LOGIN_URL = '/auth'
 
 const Login = () => {
 
   const navigate = useNavigate();
-  const {setAuth} =useContext(Authcontext)
-
+  const {setAuth} = useContext(Authcontext)
+  const {setCurrentUser} = useUser();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -26,6 +27,8 @@ const Login = () => {
       username,
       password
     });
+    
+    setCurrentUser(response.data.user);
 
     const { user, /*token*/ } = response.data;
 

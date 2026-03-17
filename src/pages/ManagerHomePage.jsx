@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import { useState } from "react";
 import Logo from "../components/Logo";
-import "./HomePage.css";
+import "./HomePage.module.css";
 
 const ManagerHomePage = () => {
 

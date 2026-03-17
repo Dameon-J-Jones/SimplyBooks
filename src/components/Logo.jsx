@@ -1,9 +1,9 @@
 import logo from "../assets/logo.png";
 
-const Logo = () => {
+const Logo = ({ className }) => {
   return (
-    <div className="logo">
-      <img src={logo} alt="SimplyBooks logo"/>
+    <div className={className}>
+      <img src={logo} alt="SimplyBooks logo" />
     </div>
   );
 };
