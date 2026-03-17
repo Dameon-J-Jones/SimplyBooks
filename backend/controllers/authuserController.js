@@ -14,6 +14,13 @@ export const loginUser = async (req, res) => {
     const user = result.rows[0];
     if (!user) return res.status(400).json({ message: "Cannot find user" });
 
+    // check admin suspension FIRST
+    if (user.suspended_until && new Date(user.suspended_until) > new Date()) {
+      return res.status(403).json({
+        message: `Account suspended until ${user.suspended_until}`
+      });
+    }
+
     //check lockout for cooldown on password attempts/admin lockout
     if (user.lockout_until && new Date(user.lockout_until) > new Date()) {
       return res.status(403).json({ message: "Account temporarily locked. Please contact an administrator."})
