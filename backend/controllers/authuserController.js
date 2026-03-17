@@ -1,5 +1,8 @@
 import pool from "../db.js";
 import { comparePassword } from "../PasswordHash.js";
+const jwt = require('jsonwebtoken'); //imports jwt 
+require('dotenv').config(); //loads dotenv which gets info from .env file
+
 
 // LOGIN
 export const loginUser = async (req, res) => {
@@ -61,8 +64,21 @@ export const loginUser = async (req, res) => {
       [username]
     );
 
+    //create "payload" for jwt token
+    const payload = { 
+      user: user.id,
+      username: username,
+      role: user.role,
+    }
+
+    //create/sign token to be stored in localstorage on front end
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '24h'});
+
+
+
     return res.json({
       message: "Login successful",
+      token: token,
       user: {
         username: user.UName,
         role: user.GroupID,
