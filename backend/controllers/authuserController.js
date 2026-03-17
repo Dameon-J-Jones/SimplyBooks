@@ -65,7 +65,8 @@ export const loginUser = async (req, res) => {
       message: "Login successful",
       user: {
         username: user.UName,
-        role: user.GroupID
+        role: user.GroupID,
+        profilePic: user.profile_pic
       }
     });
     
