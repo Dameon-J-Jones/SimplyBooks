@@ -24,3 +24,13 @@ Content-Type: application/json
   "username": "jsmith",
   "password": "123"
 }
+
+
+###
+GET http://localhost:3001/accountant-access
+Content-Type: application/json
+
+{
+  "username": "jsmith",
+  "password": "123"
+}

@@ -1,7 +1,7 @@
 import pool from "../db.js";
 import { comparePassword } from "../PasswordHash.js";
-const jwt = require('jsonwebtoken'); //imports jwt 
-require('dotenv').config(); //loads dotenv which gets info from .env file
+import jwt from "jsonwebtoken";
+import "dotenv/config";
 
 
 // LOGIN
@@ -79,11 +79,15 @@ export const loginUser = async (req, res) => {
     return res.json({
       message: "Login successful",
       token: token,
+      
+      //returns data on user through auth Accountant, admin , manager files
+      /*
       user: {
         username: user.UName,
         role: user.GroupID,
         profilePic: user.profile_pic
       }
+        */
     });
     
   } catch (err) {
