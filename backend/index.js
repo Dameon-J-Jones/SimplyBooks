@@ -5,6 +5,7 @@ import pool from "./db.js";
 import createRoutes from "./routes/createRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
+import accountRoutes from "./routes/accountRoutes.js";
 
 const app = express();
 app.use(express.json());
@@ -20,7 +21,8 @@ app.use(cors(corsOptions));
 // Routes
 app.use("/users", createRoutes);
 app.use("/auth", authRoutes);
-app.use("/admin", adminRoutes)
+app.use("/admin", adminRoutes);
+app.use("/account", accountRoutes);
 
 app.get("/test", (req, res) => {
   res.send("server works");

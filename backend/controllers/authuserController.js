@@ -1,14 +1,8 @@
 import pool from "../db.js";
 import { comparePassword } from "../PasswordHash.js";
-<<<<<<< HEAD
-import jwt from "jsonwebtoken";
-import "dotenv/config";
-=======
 import jwt from 'jsonwebtoken'; //imports jwt 
 import dotenv from 'dotenv'; //loads dotenv which gets info from .env file
 dotenv.config();
->>>>>>> eb9c2026631f3f1a1201431bd5c16f6288863f02
-
 
 // LOGIN
 export const loginUser = async (req, res) => {
@@ -73,27 +67,23 @@ export const loginUser = async (req, res) => {
     //create "payload" for jwt token
     const payload = { 
       user: user.id,
-      username: username,
-      role: user.role,
+      username: user.UName, //updated to pull from table as probably intended
+      role: user.GroupID, //same here
     }
 
     //create/sign token to be stored in localstorage on front end
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '24h'});
 
-
-
     return res.json({
       message: "Login successful",
       token: token,
-      
-      //returns data on user through auth Accountant, admin , manager files
-      /*
+
       user: {
         username: user.UName,
         role: user.GroupID,
-        profilePic: user.profile_pic
+        profilePic: user.profile_pic, //This is needed for user pfp on the front end
+        id: user.id //This is needed for foreign keys across tables
       }
-        */
     });
     
   } catch (err) {
