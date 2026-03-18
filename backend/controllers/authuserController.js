@@ -1,7 +1,13 @@
 import pool from "../db.js";
 import { comparePassword } from "../PasswordHash.js";
+<<<<<<< HEAD
 import jwt from "jsonwebtoken";
 import "dotenv/config";
+=======
+import jwt from 'jsonwebtoken'; //imports jwt 
+import dotenv from 'dotenv'; //loads dotenv which gets info from .env file
+dotenv.config();
+>>>>>>> eb9c2026631f3f1a1201431bd5c16f6288863f02
 
 
 // LOGIN
