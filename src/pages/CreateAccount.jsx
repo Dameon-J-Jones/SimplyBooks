@@ -4,6 +4,8 @@ import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import { makeUsername } from "../utils/MakeUsername";
+import 'react-tooltip/dist/react-tooltip.css';
+import { Tooltip } from "react-tooltip";
 
 export default function CreateAccount() {
 
@@ -14,6 +16,7 @@ export default function CreateAccount() {
    const [message, setMessage] = useState("");
    const [errorMessage, setErrorMessage] = useState("");
    const navigate = useNavigate();
+   const [isPopupOpen, setPopupOpen] = useState (false);
 
   const [formData, setFormData] = useState({
     userType: "Accountant",
@@ -84,8 +87,36 @@ async function handleSubmit(e) {
   return (
     <>
       <div className="logo"><LongLogo /></div>
-
+      <Tooltip id="tooltipA"/>
       <div className="create-account-container">
+        {/*Popup  Template*/}
+      {isPopupOpen &&
+      (      
+        <div className="PopDiv">
+          <p>
+            There are a few things you'll need to create an account.
+            Firstly, you'll need to choose what type of account you wish
+            to create. 
+          </p> 
+          <p>
+            Accountant Type accounts are the accounts of the standard user.
+            You'll have access to our main accounting services
+          </p>
+          <p>
+            Manager type accounts are used by managers, and they feature
+            multiple user management tools
+          </p>
+          <p>
+            Administrator Type accounts feature high level moderation tools.
+          </p>
+          <p>
+            After Selecting the account type and filling in the information fields
+            Your request will be sent to an administrator for approval.          
+          </p>
+          <button onClick={() => setPopupOpen(false)}>Close</button>
+        </div>  
+      )
+      }
         <div className="buttons-container">
           <h1>Create New User</h1>
             {message && <div className="success-message">{message}</div>}
@@ -94,9 +125,13 @@ async function handleSubmit(e) {
             {/* user type */}
             <select
               name="userType"
+              data-tooltip-id="tooltipA"
+              data-tooltip-content="Choose The User Type For Your Account"
+              data-tooltip-place="top"
               value={formData.userType}
               onChange={handleChange}
                required
+               
             >
               <option value="Accountant">Accountant</option>
               <option value="Manager">Manager</option>
@@ -217,10 +252,15 @@ async function handleSubmit(e) {
             />
 
             {/* submit */}
-            <button type="submit" className="submit-button">
+            <button type="submit" className="submit-button"
+            data-tooltip-id="tooltipA"
+            data-tooltip-content="Create Your Account"
+            data-tooltip-place="top"
+            >
               Create Account
             </button>
           </form>
+          <button onClick={() => setPopupOpen(true)}>Help </button>
         </div>
       </div>
     </>

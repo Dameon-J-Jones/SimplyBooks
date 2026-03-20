@@ -67,14 +67,12 @@ export const loginUser = async (req, res) => {
     //create "payload" for jwt token
     const payload = { 
       user: user.id,
-      username: username,
-      role: user.role,
+      username: user.UName, //updated to pull from table as probably intended
+      role: user.GroupID, //same here
     }
 
     //create/sign token to be stored in localstorage on front end
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '24h'});
-
-
 
     return res.json({
       message: "Login successful",
@@ -85,7 +83,8 @@ export const loginUser = async (req, res) => {
       user: {
         username: user.UName,
         role: user.GroupID,
-        profilePic: user.profile_pic
+        profilePic: user.profile_pic, //This is needed for user pfp on the front end
+        id: user.id //This is needed for foreign keys across tables
       }
         
     });
