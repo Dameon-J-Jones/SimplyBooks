@@ -30,13 +30,13 @@ const Login = () => {
     
     setCurrentUser(response.data.user);
 
-    const { user, /*token*/ } = response.data;
+    const { user, token } = response.data;
 
     //keep signed in after refresh
-    //if (token) localStorage.setItem("token", token);
+    if (token) localStorage.setItem("token", token);
 
     //app-wide auth state
-    setAuth({ user, /*token*/ });
+    setAuth({ user, token });
 
 
     // go to home based on role

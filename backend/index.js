@@ -22,6 +22,16 @@ app.use("/users", createRoutes);
 app.use("/auth", authRoutes);
 app.use("/admin", adminRoutes)
 
+
+
+
+
+
+
+
+
+
+
 app.get("/test", (req, res) => {
   res.send("server works");
 });
