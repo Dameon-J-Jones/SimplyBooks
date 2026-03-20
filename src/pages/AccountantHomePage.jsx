@@ -14,7 +14,7 @@ const [selectedDate, setSelectedDate] = useState(null);
 
 const today = new Date();
 const formatted = today.toLocaleDateString();
-
+const username = "username";
 
   return (
     <div className="page">
@@ -27,7 +27,7 @@ const formatted = today.toLocaleDateString();
 
         <h2 className="date">{formatted}</h2>
         <div className="logo"><LongLogo/></div>
-        <AccountInfo/>
+        <AccountInfo username={username}/>
         
         </section>
 

@@ -6,7 +6,7 @@ export default function LongLogo() {
       <img
         src={longLogoImage}
         alt="SimplyBooks logo long"
-        style={{ maxWidth: "500px", padding: "0px", margin:" 0px" }}
+        style={{ maxWidth: "500px", padding: "0px", "margin-top": "-20px" }}
       />
     </div>
   );
