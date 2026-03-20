@@ -10,8 +10,26 @@ import { Tooltip } from "react-tooltip";
 const UserList = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
   const [users, setUsers] = useState([]);
+  const [suspendDaysMap, setSuspendDaysMap] = useState({});
+
+  const suspendUser = async (username, days) => {
+    try{
+      const untilDate = new Date();
+      untilDate.setDate(untilDate.getDate() + days);
+
+      await api.post("/admin/suspend",{username, suspendedUntil:untilDate,});
+
+      // refresh users
+      const response = await api.get("/users");
+      setUsers(response.data);
+
+      alert(`${username} suspended for ${days} day(s)`);
+
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
   const fetchUsers = async () => {
@@ -26,33 +44,62 @@ const UserList = () => {
   fetchUsers();
 }, []);
 
-  return (
-    <div className="page-margin">
-      <Tooltip id="tooltipA"/>
-      <div className="top-bar">
-        <div className="logo"><Logo/></div>
-        <span className="icon" id="initials"></span>
-      </div>
-      
-    <div className="login-page">
-    <ul>
+return (
+<div className="user-table-container">
+  <table className="user-table">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>Role</th>
+        <th>Status</th>
+        <th>Created</th>
+        <th>Suspend</th>
+      </tr>
+    </thead>
+    <tbody>
       {users.map((user) => {
+        const groupMap = { 0: "Accountant", 1: "Manager", 2: "Admin" };
+        const statusMap = { 0: "Pending", 1: "Approved", 2: "Rejected" };
 
-      const groupMap = { 0: "Accountant", 1: "Manager", 2: "Admin" }; //maps number returned from db to be a readable string
-      const statusMap = { 0: "Pending", 1: "Approved", 2: "Rejected" }; //should eventually get this to a point where admins can easily change status of individual users
+        return (
+          <tr key={user.UName}>
+            <td>{user.UName}</td>
+            <td>{user.Email}</td>
+            <td>{user.Phone_Number}</td>
+            <td>{user.address_line1}, {user.address_line2}</td>
+            <td>{groupMap[user.GroupID]}</td>
+            <td>{statusMap[user.status]}</td>
+            <td>{new Date(user.created_on).toLocaleDateString()}</td>
 
-        return(
-        <li key={user.UName}>
-          {user.UName} | {user.Email}| {user.Phone_Number} | {user.address_line1} | {user.address_line2} | {groupMap[user.GroupID]} | {statusMap[user.status]} | {user.created_on}
-        </li>
+            <td>
+              <select
+                value={suspendDaysMap[user.UName] || 7}
+                onChange={(e) =>
+                  setSuspendDaysMap({
+                    ...suspendDaysMap,
+                    [user.UName]: Number(e.target.value),
+                  })
+                }
+              >
+                <option value={1}>1 Day</option>
+                <option value={7}>7 Days</option>
+                <option value={30}>30 Days</option>   
+              </select>
+
+              <button onClick={() => suspendUser(user.UName, suspendDaysMap[user.UName])}>
+              Suspend
+              </button>
+            </td> 
+          </tr>
         );
       })}
-    </ul>
-
-    </div>
-    </div>
-
-  );
+    </tbody>
+  </table>
+</div>
+);
 };
 
 export default UserList;

@@ -13,7 +13,8 @@ export const getUsers = async (req, res) => {
         "address_line2",
         "GroupID",
         "status",
-        "created_on"
+        "created_on",
+        "profile_pic"
       FROM "User"
       ORDER BY "UName";
     `);

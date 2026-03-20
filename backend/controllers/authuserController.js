@@ -1,5 +1,8 @@
 import pool from "../db.js";
 import { comparePassword } from "../PasswordHash.js";
+import jwt from 'jsonwebtoken'; //imports jwt 
+import dotenv from 'dotenv'; //loads dotenv which gets info from .env file
+dotenv.config();
 
 // LOGIN
 export const loginUser = async (req, res) => {
@@ -13,6 +16,13 @@ export const loginUser = async (req, res) => {
 
     const user = result.rows[0];
     if (!user) return res.status(400).json({ message: "Cannot find user" });
+
+    // check admin suspension FIRST
+    if (user.suspended_until && new Date(user.suspended_until) > new Date()) {
+      return res.status(403).json({
+        message: `Account suspended until ${user.suspended_until}`
+      });
+    }
 
     //check lockout for cooldown on password attempts/admin lockout
     if (user.lockout_until && new Date(user.lockout_until) > new Date()) {
@@ -54,11 +64,25 @@ export const loginUser = async (req, res) => {
       [username]
     );
 
+    //create "payload" for jwt token
+    const payload = { 
+      user: user.id,
+      username: user.UName, //updated to pull from table as probably intended
+      role: user.GroupID, //same here
+    }
+
+    //create/sign token to be stored in localstorage on front end
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '24h'});
+
     return res.json({
       message: "Login successful",
+      token: token,
+
       user: {
         username: user.UName,
-        role: user.GroupID
+        role: user.GroupID,
+        profilePic: user.profile_pic, //This is needed for user pfp on the front end
+        id: user.id //This is needed for foreign keys across tables
       }
     });
     

@@ -4,6 +4,7 @@ import Logo from "../components/Logo";
 import "./HomePage.css";
 import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip } from "react-tooltip";
+import "./HomePage.module.css";
 
 const AccountantHomePage = () => {
 const [isPopupOpen, setPopupOpen] = useState (false);
