@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom"
 import { useState } from "react";
 import Logo from "../components/Logo";
-import "./HomePage.css";
 import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip } from "react-tooltip";
 import "./HomePage.module.css";
