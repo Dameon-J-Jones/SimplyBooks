@@ -7,6 +7,10 @@ import Authcontext from "../components/AuthProvider";
 import api from "../api/axios";
 import { useNavigate } from "react-router-dom";
 
+import 'react-tooltip/dist/react-tooltip.css';
+import { Tooltip } from "react-tooltip";
+
+
 const LOGIN_URL = '/auth'
 
 const Login = () => {
@@ -16,6 +20,8 @@ const Login = () => {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const [isPopupOpen, setPopupOpen] = useState (false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -60,6 +66,7 @@ const Login = () => {
       </div>
       
     <div className="login-page">
+      <Tooltip id="tooltipA"/>
       <form onSubmit={handleSubmit} className="login-form">
      
        {/* Username */}
@@ -81,19 +88,56 @@ const Login = () => {
         />
 
         {/* Submit */}
-        <button type="submit">Login</button>
+        <button type="submit"
+          data-tooltip-id="tooltipA"
+          data-tooltip-content="Login"
+          data-tooltip-place="top"
+        >Login</button>
 
         {/* Extra actions */}
        
       </form>
-      
+
+      {/*Popup  Template*/}
+      {isPopupOpen &&
+      (
+      <div className="PopDiv">
+        <p>
+          This screen allows the user to login by entering their
+           username and password, then clicking the Login Button.
+           If you've forgotten your password, click the "Forgot Password Button"
+        </p> 
+        <p>
+          This screen also allows for a user to create an account by clicking
+          the "create account" button
+        </p>
+        <button onClick={() => setPopupOpen(false)}>Close </button>
+      </div>  
+      )
+      }
       <Link to="/forgot-password" >
-       <button type="button" className="forgot-password-button">Forgot Password</button>
+          <button type="button" className="forgot-password-button" id="Forgot"
+          data-tooltip-id="tooltipA"
+          data-tooltip-content="Forgot Password"
+          data-tooltip-place="top"
+          >
+            Forgot Password
+          </button>
       </Link>
 
-      <Link to="/create-account">
+      
+
+
+      <Link to="/create-account"
+          data-tooltip-id="tooltipA"
+          data-tooltip-content="Create Account"
+          data-tooltip-place="top"
+      >
           <button type="button" className="create-user-button">Create New User</button>
       </Link>
+      <button onClick={() => setPopupOpen(true)}>Help </button>
+      
+
 
     </div>
     </div>

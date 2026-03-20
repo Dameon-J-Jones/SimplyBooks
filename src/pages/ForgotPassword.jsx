@@ -2,6 +2,8 @@ import LongLogo from "../assets/LongLogo.png";
 import "./ForgotPassword.css";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import 'react-tooltip/dist/react-tooltip.css';
+import { Tooltip } from "react-tooltip";
 
 export default function ForgotPassword(){
     const [userId, setUserId] = useState("");
@@ -9,6 +11,8 @@ export default function ForgotPassword(){
     const [securityAnswer, setSecurityAnswer] = useState("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
+
+    const [isPopupOpen, setPopupOpen] = useState (false);
 
     const handleReset = () => {
     if (!userId || !email || !securityAnswer) {
@@ -24,8 +28,21 @@ export default function ForgotPassword(){
     
 return (
     <div className="forgot-wrapper">
+      <Tooltip id="tooltipA"/>
       <img src={LongLogo} alt="App Logo" className="forgot-logo" />
-
+  
+      {/*Popup  Template*/}
+      {isPopupOpen &&
+      (      
+        <div className="PopDiv">
+          <p>
+            To reset your password, you must enter your email and user Name.
+            In addition, you need to answer your security question.
+          </p> 
+          <button onClick={() => setPopupOpen(false)}>Close </button>
+        </div>  
+      )
+      }
       <div className="forgot-card">
         <h2>Forgot Password</h2>
 
@@ -55,8 +72,14 @@ return (
           onChange={(e) => setSecurityAnswer(e.target.value)}
         />
 
-        <button onClick={handleReset}>Reset Password</button>
+        <button onClick={handleReset}
+        data-tooltip-id="tooltipA"
+          data-tooltip-content="Submit Request of Password Change"
+          data-tooltip-place="top"
+        >Reset Password</button>
+            <button onClick={() => setPopupOpen(true)}>Help </button>
       </div>
+      
     </div>
   );
 }

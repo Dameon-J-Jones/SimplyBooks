@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import api from "../api/axios";
 import Logo from "../components/Logo";
 import "./UserList.css";
+import 'react-tooltip/dist/react-tooltip.css';
+import { Tooltip } from "react-tooltip";
 
 const UserList = () => {
   const [username, setUsername] = useState("");
@@ -26,6 +28,7 @@ const UserList = () => {
 
   return (
     <div className="page-margin">
+      <Tooltip id="tooltipA"/>
       <div className="top-bar">
         <div className="logo"><Logo/></div>
         <span className="icon" id="initials"></span>
