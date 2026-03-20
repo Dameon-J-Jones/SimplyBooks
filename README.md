@@ -17,3 +17,4 @@ React + Vite frontend for Software Application Domain project.
 4. in a new terminal (DO NOT CLOSE YOUR OLD ONE), type 'cd backend' and 'node index.js' to connect to the database
 5. Any changes made to the backend while running, you MUST ctrl+c in the terminal and run the commands in step 4 again
 
+### Logins for Testing

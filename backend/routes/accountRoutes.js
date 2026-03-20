@@ -6,6 +6,7 @@ import { updateAccount } from "../controllers/accountController.js";
 import { deactivateAccount } from "../controllers/accountController.js";
 
 const router = express.Router();
+
 router.post("/", createAccount);
 router.get("/", getAccounts);
 router.get("/:id", getAccountById);

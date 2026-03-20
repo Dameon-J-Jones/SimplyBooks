@@ -1,12 +1,24 @@
 import { Link } from "react-router-dom"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Logo from "../components/Logo";
 import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip } from "react-tooltip";
 import "./HomePage.module.css";
+import { Navigate } from "react-router-dom";
 
 const ManagerHomePage = () => {
+  const token = localStorage.get("token");
+  useEffect(()=>{
 
+  },[])
+
+  function checkAuth(){
+    if(token === null)
+    {
+      alert("You are not Logged in")
+      Navigate('http://localhost:5173//login');
+    }
+  }
 
   return (
     <div className="page">

@@ -1,0 +1,35 @@
+.header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  width: 100%;
+}
+
+.date {
+  margin: 0;
+  margin-left: 10px;
+  justify-self: start;
+}
+
+.logo {
+  justify-self: center;
+}
+
+.logo img {
+  margin-top: -100px;
+  width: 200px;
+  display: block;
+}
+
+.header > :last-child {
+  justify-self: end;
+}
+
+
+.body{
+    margin-top: 100px;
+   display: flex;
+  flex-direction: column;   /* stack vertically */
+  align-items: center;      /* center horizontally */
+  gap: 10px; 
+}

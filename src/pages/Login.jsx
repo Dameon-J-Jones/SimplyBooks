@@ -128,8 +128,7 @@ const Login = () => {
           </button>
       </Link>
 
-      
-
+     
 
       <Link to="/create-account"
           data-tooltip-id="tooltipA"
@@ -137,7 +136,9 @@ const Login = () => {
           data-tooltip-place="top"
       >
           <button type="button" className="create-user-button">Create New User</button>
-      </Link>
+      </Link> 
+      <br/>
+
       <button onClick={() => setPopupOpen(true)}>Help </button>
       
 
