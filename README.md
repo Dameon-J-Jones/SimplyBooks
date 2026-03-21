@@ -18,3 +18,17 @@ React + Vite frontend for Software Application Domain project.
 5. Any changes made to the backend while running, you MUST ctrl+c in the terminal and run the commands in step 4 again
 
 ### Logins for Testing
+(Accountant)
+email: accountant@email.com
+firstname: AccountantFname
+Last name: AccountantLname
+Password: Pass1234!
+street: test st
+city: test city
+state: GA
+zip: 00000
+phone: 1234567890
+DOB: 03.20.2026
+Mother's Maiden name?:Smith
+
+

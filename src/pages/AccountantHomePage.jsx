@@ -1,16 +1,52 @@
 import { Link } from "react-router-dom"
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import LongLogo from "../components/LongLogo";
 import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip } from "react-tooltip";
 import "./HomePage.module.css";
 import "./AccountHomePage.css";
 import AccountInfo from "../components/AccountInfo";
-
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const AccountantHomePage = () => {
 const [isPopupOpen, setPopupOpen] = useState (false);
-const [selectedDate, setSelectedDate] = useState(null);
+const token = localStorage.getItem("token");
+const [data, setData] = useState({})
+
+const navigate = useNavigate();
+
+async function verifyToken() {
+
+  if (!token) {
+    navigate("/login");
+    return;
+  }
+
+  try {
+    const response = await axios.get(
+      "http://localhost:5000/accountant-access",
+      {
+        headers: {
+           authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    console.log("User:", response.data);
+    getData(response.data);
+
+  } catch (error) {
+    console.log("Invalid token");
+    navigate("/login");
+  }
+}
+
+useEffect(()=>{
+//verifyToken();
+},[])
+
+console.log(data)
 
 const today = new Date();
 const formatted = today.toLocaleDateString();
@@ -23,7 +59,7 @@ const username = "username";
 
 
 
-       <section className="header">
+       <section className="header" >
 
         <h2 className="date">{formatted}</h2>
         <div className="logo"><LongLogo/></div>
@@ -36,19 +72,20 @@ const username = "username";
 
 
 
-<div className="body">
+
       {/*Popup  Template*/}
       {isPopupOpen &&
       (      
         <div className="PopDiv">
           <p>
-          
+          Accountants can securely manage financial records, track transactions, generate reports, and oversee user accounts within the system.
           </p> 
           <button onClick={() => setPopupOpen(false)}>Close</button>
         </div>  
       )
       }
-
+<div className="body">
+      <h1>Accountant</h1>
       <Link to="/UserList">
           <button type="button" className="create-user-button"
           data-tooltip-id="tooltipA"
@@ -64,7 +101,7 @@ const username = "username";
           >Create New User</button>
       </Link>
      
-<button onClick={() => setPopupOpen(true)}>Help </button>
+<button className="help-button" onClick={() => setPopupOpen(true)}>Help </button>
     </div>
 </div>
   );

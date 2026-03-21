@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import { useState, useContext } from "react";
 import Logo from "../components/Logo";
 import "./Login.css";
-import LongLogo from "../components/longLogo";
+import LongLogo from "../components/LongLogo";
 import Authcontext from "../components/AuthProvider";
 import api from "../api/axios";
 import { useNavigate } from "react-router-dom";
