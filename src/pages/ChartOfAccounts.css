@@ -1,0 +1,33 @@
+.coa-container {
+  padding: 30px;
+}
+
+.filter-box {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.coa-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.coa-table th,
+.coa-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+.clickable-row {
+  cursor: pointer;
+}
+
+.clickable-row:hover {
+  background-color: #f5f5f5;
+}
+
+.error-text {
+  color: red;
+}

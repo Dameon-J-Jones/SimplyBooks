@@ -1,0 +1,13 @@
+.ledger-container {
+  padding: 30px;
+}
+
+.ledger-card {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.error-text {
+  color: red;
+}

@@ -10,6 +10,8 @@ import ManagerHomePage from "./pages/ManagerHomePage";
 import AccountantHomePage from "./pages/AccountantHomePage";
 import UserList from "./pages/UserList";
 import RequireAuth from "./components/RequireAuth";
+import ChartOfAccounts from "./pages/ChartOfAccounts";
+import Ledger from "./pages/Ledger";
 export default function App() {
   return (
 
@@ -27,6 +29,8 @@ export default function App() {
         <Route path="/ManagerHome" element={<ManagerHomePage/>}/>
         <Route path="/AccountantHome" element={<AccountantHomePage/>}/>
         <Route path="/UserList" element={<UserList/>}/>
+        <Route path="/accounts" element={<ChartOfAccounts />} />
+        <Route path="/ledger/:id" element={<Ledger />} />
 
         {/* catch-all */}
         <Route path="*" element={<h1 style={{ color: "black" }}>404 Not Found</h1>} />
