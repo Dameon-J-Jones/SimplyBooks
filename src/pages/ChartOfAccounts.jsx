@@ -4,6 +4,8 @@ import axios from "../api/axios";
 import LongLogo from "../components/LongLogo";
 import AccountInfo from "../components/AccountInfo";
 import "./ChartOfAccounts.css";
+import 'react-tooltip/dist/react-tooltip.css';
+import { Tooltip } from "react-tooltip";
 
 // Page shows all accounts
 // Users can filter accounts and click a row to open its ledger page
@@ -89,6 +91,8 @@ const ChartOfAccounts = () => {
 
   return (
     <div className="page">
+      <Tooltip id="tooltipA"/>
+
       <section className="header">
         <h2 className="date">{formatted}</h2>
         <div className="logo">
@@ -96,6 +100,9 @@ const ChartOfAccounts = () => {
         </div>
         <AccountInfo username={username} />
       </section>
+
+      
+
 
       <div className="coa-container">
         <h1>Chart of Accounts</h1>

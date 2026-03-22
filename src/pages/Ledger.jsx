@@ -4,6 +4,8 @@ import axios from "../api/axios";
 import LongLogo from "../components/LongLogo";
 import AccountInfo from "../components/AccountInfo";
 import "./Ledger.css";
+import 'react-tooltip/dist/react-tooltip.css';
+import { Tooltip } from "react-tooltip";
 
 // Page shows details for one account based on its ID
 
@@ -37,6 +39,7 @@ const Ledger = () => {
 
   return (
     <div className="page">
+      <Tooltip id="tooltipA"/>
       <section className="header">
         <h2 className="date">{formatted}</h2>
         <div className="logo">
@@ -44,6 +47,24 @@ const Ledger = () => {
         </div>
         <AccountInfo username={username} />
       </section>
+
+
+      <div className="navBar">
+        <Link to="/UserList">
+          <button type="button" className="create-user-button"
+          data-tooltip-id="tooltipA"
+          data-tooltip-content="User List"
+          data-tooltip-place="bottom"
+          >User List</button>
+        </Link>
+        <Link to="/accounts">
+          <button type="button" className="create-user-button"
+          data-tooltip-id="tooltipA"
+          data-tooltip-content="Chart of Accounts"
+          data-tooltip-place="bottom"
+          >Charts</button>
+        </Link>
+      </div>
 
       <div className="ledger-container">
         <button onClick={() => navigate("/accounts")}>

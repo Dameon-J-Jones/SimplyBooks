@@ -31,3 +31,25 @@
 .error-text {
   color: red;
 }
+
+.create-user-button {
+  width: 300px;
+  margin-top: 15px;
+  padding: 10px;
+  cursor: pointer;
+}
+.navBar {
+  width: 100%;
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  
+  box-sizing: border-box;
+  background-color: #ffffff;
+  position: fixed;
+  top: 70px;
+  left: 0;
+  
+  
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}

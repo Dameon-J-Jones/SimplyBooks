@@ -46,6 +46,22 @@ const UserList = () => {
 
 return (
 <div className="user-table-container">
+      <div className="navBar">
+        <Link to="/UserList">
+          <button type="button" className="create-user-button"
+          data-tooltip-id="tooltipA"
+          data-tooltip-content="User List"
+          data-tooltip-place="bottom"
+          >User List</button>
+        </Link>
+        <Link to="/accounts">
+          <button type="button" className="create-user-button"
+          data-tooltip-id="tooltipA"
+          data-tooltip-content="Chart of Accounts"
+          data-tooltip-place="bottom"
+          >Charts</button>
+        </Link>
+      </div>
   <table className="user-table">
     <thead>
       <tr>
