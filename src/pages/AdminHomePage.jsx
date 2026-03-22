@@ -105,6 +105,13 @@ return (
           data-tooltip-place="top"
           >Create New User</button>
       </Link>
+     <Link to="/accounts">
+          <button type="button" className="create-user-button"
+          data-tooltip-id="tooltipA"
+          data-tooltip-content="View The Chart Of Accounts"
+          data-tooltip-place="top"
+          >Chart of Accounts</button>
+      </Link>
 <button className="help-button" onClick={() => setPopupOpen(true)}>Help </button>
     </div>
   </div>
