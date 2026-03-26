@@ -92,25 +92,30 @@ export const createAccount = async (req, res) => {
 
 //search, filter and view ALL accounts
 export const getAccounts = async (req, res) => {
-  const { search, category, number } = req.query;
+  const { search, category, number, subcategory, amount } = req.query;
 
   try {
-    let query = `SELECT * FROM "Account" WHERE is_active = true`;
+    let query = `SELECT * FROM "Account" WHERE "IsActive" = true`;
     let values = [];
 
     if (search) {
       values.push(`%${search}%`);
-      query += ` AND account_name ILIKE $${values.length}`;
+      query += ` AND "AccountName" ILIKE $${values.length}`;
     }
 
     if (category) {
       values.push(category);
-      query += ` AND category = $${values.length}`;
+      query += ` AND "Category" = $${values.length}`;
     }
 
     if (number) {
       values.push(number);
-      query += ` AND account_number = $${values.length}`;
+      query += ` AND "AccountNumber" = $${values.length}`;
+    }
+
+      if (subcategory) {
+      values.push(subcategory);
+      query += ` AND "Subcategory" = $${values.length}`;
     }
 
     const result = await pool.query(query, values);
@@ -156,7 +161,7 @@ export const updateAccount = async (req, res) => {
     //Update
     const result = await pool.query(
       `UPDATE "Account"
-       SET account_name = $1,
+       SET "AccountName" = $1,
            category = $2
        WHERE id = $3
        RETURNING *`,
@@ -198,7 +203,7 @@ export const deactivateAccount = async (req, res) => {
     }
 
     await pool.query(
-      `UPDATE "Account" SET is_active = false WHERE id = $1`,
+      `UPDATE "Account" SET "IsActive" = false WHERE id = $1`,
       [id]
     );
 
