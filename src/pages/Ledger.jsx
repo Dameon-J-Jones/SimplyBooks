@@ -6,6 +6,7 @@ import AccountInfo from "../components/AccountInfo";
 import "./Ledger.css";
 import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip } from "react-tooltip";
+import {Link} from "react-router-dom"
 
 // Page shows details for one account based on its ID
 
@@ -20,8 +21,35 @@ const Ledger = () => {
   const today = new Date();
   const formatted = today.toLocaleDateString();
   const username = "username";
+  const token = localStorage.getItem("token");
+async function verifyToken() {
+
+  if (!token) {
+    navigate("/login");
+    return;
+  }
+
+  try {
+    const response = await axios.get(
+      "http://localhost:5000/accountant-access",
+      {
+        headers: {
+           authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    console.log("User:", response.data);
+    getData(response.data);
+
+  } catch (error) {
+    console.log("Invalid token");
+    navigate("/login");
+  }
+}
 
   useEffect(() => {
+    //verifyToken();
     fetchAccount();
   }, [id]);
 
@@ -50,7 +78,7 @@ const Ledger = () => {
 
 
       <div className="navBar">
-        <Link to="/UserList">
+        <Link to="/userlist">
           <button type="button" className="create-user-button"
           data-tooltip-id="tooltipA"
           data-tooltip-content="User List"

@@ -12,7 +12,7 @@ const UserList = () => {
   const [password, setPassword] = useState("");
   const [users, setUsers] = useState([]);
   const [suspendDaysMap, setSuspendDaysMap] = useState({});
-
+  const token = localStorage.getItem("token");
   const suspendUser = async (username, days) => {
     try{
       const untilDate = new Date();
@@ -30,8 +30,33 @@ const UserList = () => {
       console.error(err);
     }
   };
+async function verifyToken() {
 
+  if (!token) {
+    navigate("/login");
+    return;
+  }
+
+  try {
+    const response = await axios.get(
+      "http://localhost:5000/accountant-access",
+      {
+        headers: {
+           authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    console.log("User:", response.data);
+    getData(response.data);
+
+  } catch (error) {
+    console.log("Invalid token");
+    navigate("/login");
+  }
+}
   useEffect(() => {
+    //verifyToken();
   const fetchUsers = async () => {
     try {
       const response = await api.get("/users");

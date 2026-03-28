@@ -16,7 +16,7 @@ const ChartOfAccounts = () => {
   const [accounts, setAccounts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
+  const token = localStorage.getItem("token");
   // filters the user can type into
   const [filters, setFilters] = useState({
     name: "",
@@ -26,6 +26,34 @@ const ChartOfAccounts = () => {
     amount: "",
   });
 
+async function verifyToken() {
+
+  if (!token) {
+    navigate("/login");
+    return;
+  }
+
+  try {
+    const response = await axios.get(
+      "http://localhost:5000/accountant-access",
+      {
+        headers: {
+           authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    console.log("User:", response.data);
+    getData(response.data);
+
+  } catch (error) {
+    console.log("Invalid token");
+    navigate("/login");
+  }
+}
+
+
+
   const today = new Date();
   const formatted = today.toLocaleDateString();
 
@@ -33,6 +61,7 @@ const ChartOfAccounts = () => {
   const username = "username";
 
   useEffect(() => {
+    //verifyToken();
     fetchAccounts();
   }, []);
 
