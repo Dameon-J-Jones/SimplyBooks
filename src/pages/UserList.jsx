@@ -13,6 +13,7 @@ const UserList = () => {
   const [users, setUsers] = useState([]);
   const [suspendDaysMap, setSuspendDaysMap] = useState({});
   const token = localStorage.getItem("token");
+
   const suspendUser = async (username, days) => {
     try{
       const untilDate = new Date();
@@ -30,6 +31,8 @@ const UserList = () => {
       console.error(err);
     }
   };
+
+
 async function verifyToken() {
 
   if (!token) {
@@ -55,7 +58,9 @@ async function verifyToken() {
     navigate("/login");
   }
 }
-  useEffect(() => {
+  
+
+useEffect(() => {
     //verifyToken();
   const fetchUsers = async () => {
     try {
@@ -108,7 +113,7 @@ return (
         return (
           <tr key={user.UName}>
             <td>{user.UName}</td>
-            <td>{user.Email}</td>
+            <td><a href={`mailto:${user.Email}`}>{user.Email}</a></td>
             <td>{user.Phone_Number}</td>
             <td>{user.address_line1}, {user.address_line2}</td>
             <td>{groupMap[user.GroupID]}</td>
