@@ -21,8 +21,7 @@ async function verifyToken() {
   }
 
   try {
-    const response = await axios.get(
-      "http://localhost:5000/accountant-access",
+    const response = await axios.get("http://localhost:3001/admin/manager-access",
       {
         headers: {
            authorization: `Bearer ${token}`
@@ -30,24 +29,24 @@ async function verifyToken() {
       }
     );
 
-    console.log("User:", response.data);
-    getData(response.data);
+    setData(response.data);
+    
 
   } catch (error) {
-    console.log("Invalid token");
+    console.log(error);
     navigate("/login");
   }
 }
 
-useEffect(()=>{
-//verifyToken();
-},[])
+useEffect(() => {
+  verifyToken();
+}, []);
 
-console.log(data)
 
 const today = new Date();
 const formatted = today.toLocaleDateString();
-const username = "username";
+const username = data.username || "username";
+
   return (
     <div className="page">
       <Tooltip id="tooltipA"/>

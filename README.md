@@ -32,3 +32,18 @@ DOB: 03.20.2026
 Mother's Maiden name?:Smith
 
 
+
+(Admin)
+email: admin@email.com
+firstname: adminFname
+Last name: adminLname
+Username: aadminlname0326
+Password: Pass1234!
+street: admin st
+city: admin city
+state: admin state
+zip: 11111
+phone: 1234567890
+DOB: 01.14.2025
+Mother's Maiden name?:Admin
+

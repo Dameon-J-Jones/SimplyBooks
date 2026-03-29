@@ -6,19 +6,21 @@ import { Tooltip } from "react-tooltip";
 import {useNavigate } from "react-router-dom";
 import AccountInfo from "../components/AccountInfo";
 import "./HomePage.module.css";
-
-
 import {useUser} from "../components/UserContext";
 import styles from "./HomePage.module.css";
+import axios from "../api/axios";
+import api from "../api/axios";
+
+
 
 const AdminHomePage = () => {
-  const {currentUser} = useUser();
+  
+const {currentUser} = useUser();
 const [isPopupOpen, setPopupOpen] = useState (false);
-
 const token = localStorage.getItem("token");
 const [data, setData] = useState({})
-
 const navigate = useNavigate();
+
 
 async function verifyToken() {
 
@@ -28,8 +30,7 @@ async function verifyToken() {
   }
 
   try {
-    const response = await axios.get(
-      "http://localhost:5000/accountant-access",
+    const response = await axios.get("http://localhost:3001/admin/admin-access",
       {
         headers: {
            authorization: `Bearer ${token}`
@@ -37,24 +38,23 @@ async function verifyToken() {
       }
     );
 
-    console.log("User:", response.data);
-    getData(response.data);
+    setData(response.data);
+    
 
   } catch (error) {
-    console.log("Invalid token");
+    console.log(error);
     navigate("/login");
   }
 }
 
-useEffect(()=>{
-//verifyToken();
-},[])
+useEffect(() => {
+  verifyToken();
+}, []);
 
-console.log(data)
 
 const today = new Date();
 const formatted = today.toLocaleDateString();
-const username = "username";
+const username = data.username || "username";
 
 
 

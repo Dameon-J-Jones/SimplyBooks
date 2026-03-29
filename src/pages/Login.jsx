@@ -7,12 +7,9 @@ import Authcontext from "../components/AuthProvider";
 import api from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../components/UserContext";
-
 import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip } from "react-tooltip";
 
-
-const LOGIN_URL = '/auth'
 
 const Login = () => {
 
@@ -26,7 +23,6 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  console.log("SUBMIT", { username, password });
 
   try {
     const response = await api.post("/auth", {
@@ -38,12 +34,14 @@ const Login = () => {
 
     const { user, token } = response.data;
 
+    console.log(response.data)
+
     //keep signed in after refresh
     if (token) localStorage.setItem("token", token);
 
     //app-wide auth state
     setAuth({ user, token });
-
+   console.log(localStorage.getItem("token"))
 
     // go to home based on role
     const roleRoutes = {

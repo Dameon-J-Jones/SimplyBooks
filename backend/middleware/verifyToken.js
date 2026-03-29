@@ -1,4 +1,5 @@
 import express from "express"
+import jwt from 'jsonwebtoken'
 
 export default function verifyToken(req, res, next){
     const authHeader = req.headers.authorization;

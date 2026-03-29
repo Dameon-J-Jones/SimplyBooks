@@ -1,4 +1,4 @@
-import LongLogo from "../components/longLogo";
+import LongLogo from "../components/LongLogo";
 import "./CreateAccount.css";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";

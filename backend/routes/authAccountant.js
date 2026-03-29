@@ -5,6 +5,8 @@ import express from "express";
 
 const router = express.Router();
 
-router.get('/accountant-access', verifyToken, authorizeRole("Accountant"), (req, res) =>{
+router.get('/accountant-access', verifyToken, authorizeRole(0), (req, res) =>{
     res.json(req.user)
 })
+
+
