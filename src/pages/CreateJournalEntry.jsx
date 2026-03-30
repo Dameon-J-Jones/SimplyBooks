@@ -49,7 +49,8 @@ async function handleSubmit(e) {
 
 
   try {
-    const username = makeUsername(formData.firstName, formData.lastName);
+    //Status of submitted journal entries is "p" for pending.
+    const status = "p";
 
     // ensure all required fields are non-empty
     const payload = { ...formData, username };
