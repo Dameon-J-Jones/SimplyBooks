@@ -84,7 +84,10 @@ async function handleSubmit(e) {
       (      
         <div className="PopDiv">
           <p>
-            
+            This is the page to create an individual Journal Entry
+          </p>
+          <p>
+            When entering Debits and credits, make sure that each is in the correct column.
           </p>
           <button onClick={() => setPopupOpen(false)}>Close</button>
         </div>  
