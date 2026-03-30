@@ -12,6 +12,7 @@ import UserList from "./pages/UserList";
 import RequireAuth from "./components/RequireAuth";
 import ChartOfAccounts from "./pages/ChartOfAccounts";
 import Ledger from "./pages/Ledger";
+import EditUserInfo from "./pages/EditUserInfo";
 export default function App() {
   return (
 
@@ -31,7 +32,7 @@ export default function App() {
         <Route path="/UserList" element={<UserList/>}/>
         <Route path="/accounts" element={<ChartOfAccounts />} />
         <Route path="/ledger/:id" element={<Ledger />} />
-
+        <Route path="/EditUser" element={<EditUserInfo />} />
         {/* catch-all */}
         <Route path="*" element={<h1 style={{ color: "black" }}>404 Not Found</h1>} />
       </Routes>
