@@ -13,6 +13,7 @@ import RequireAuth from "./components/RequireAuth";
 import ChartOfAccounts from "./pages/ChartOfAccounts";
 import Ledger from "./pages/Ledger";
 import CreateJournalEntry from "./pages/CreateJournalEntry";
+import EditUserInfo from "./pages/EditUserInfo";
 export default function App() {
   return (
 
@@ -34,6 +35,7 @@ export default function App() {
         <Route path="/ledger/:id" element={<Ledger />} />
         <Route path="/CreateJournalEntry" element={<CreateJournalEntry />} />
 
+        <Route path="/EditUser" element={<EditUserInfo />} />
         {/* catch-all */}
         <Route path="*" element={<h1 style={{ color: "black" }}>404 Not Found</h1>} />
       </Routes>

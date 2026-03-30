@@ -74,7 +74,7 @@ useEffect(() => {
   fetchUsers();
 }, []);
 
-return (
+return (<>
 <div className="user-table-container">
       <div className="navBar">
         <Link to="/UserList">
@@ -144,7 +144,16 @@ return (
       })}
     </tbody>
   </table>
-</div>
+ 
+</div> 
+<Link to="/EditUser" className="edit-user-link">
+  <button type="button" className="edit-user-button"
+          data-tooltip-id="tooltipA"
+          data-tooltip-content="User List"
+          data-tooltip-place="bottom"
+          >Edit User Info</button>
+          </Link>
+          </>
 );
 };
 

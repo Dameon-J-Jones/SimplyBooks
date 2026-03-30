@@ -14,8 +14,8 @@ padding-left: 20px;
 padding-right:20px;
 }
 .user-table-container {
-  margin-top: 20px;
   overflow-x: auto;
+  padding-top: 20px;
 }
 
 .user-table {
@@ -25,6 +25,7 @@ padding-right:20px;
   color: white;
   border-radius: 8px;
   overflow: hidden;
+  margin-top: 40px;
 }
 
 .user-table th {
@@ -44,15 +45,20 @@ padding-right:20px;
 .navBar {
   width: 100%;
   display: flex;
-  justify-content: center; 
+  justify-content: center;
   align-items: center;
-  
   box-sizing: border-box;
   background-color: #ffffff;
   position: fixed;
-  top: 70px;
-  left: 0;
-  
-  
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-top: -75px;
+}
+
+.edit-user-button, .edit-user-link{
+  margin: 5px 0px;
+  padding: 10px 100px;
+  display: flex;
+  justify-content: center; /* Centers horizontally */
+  align-items: center; 
+
 }
