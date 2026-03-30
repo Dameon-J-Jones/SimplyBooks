@@ -1,0 +1,105 @@
+.create-account-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: gray;
+  padding-top: 20px;
+}
+
+.buttons-container {
+  background-color: lightgray;
+  width: 600px;
+  padding: 30px;
+  border-radius: 8px;
+}
+
+/* THIS makes it stack nicely */
+.create-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* space between each line */
+}
+
+.create-form input,
+.create-form select {
+  padding: 8px;
+  font-size: 14px;
+}
+
+
+.create-form{
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+.create-form label{
+  display: block;
+  font-weight: 600;
+}
+
+.create-form input,
+.create-form select{
+  display: block;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+
+.success-message {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-weight: bold;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+
+
+.error-message {
+  background-color: #bc1919;
+  color: white;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-weight: bold;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+
+
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+
+.submit-button{
+  margin-top: 10px;
+  padding: 10px;
+}
+
+.PopDiv{
+position:absolute;
+z-index: 10;
+display: flex;
+flex-direction: column;
+align-items: center;
+background-color: #e9ecf2;
+border-style: solid;
+border-width: 2px;
+width: 40%;
+padding-top: 25px;
+padding-bottom: 25px;
+padding-left: 20px;
+padding-right:20px;
+}
+
