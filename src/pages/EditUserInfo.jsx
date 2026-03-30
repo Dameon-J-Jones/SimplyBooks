@@ -11,7 +11,7 @@ export default function EditUserInfo() {
 
   const userRef =useRef();
   const errRef = useRef();
-
+   const token = localStorage.getItem("token")
    const [userFocus, setUserFocus] = useState(false) 
    const [message, setMessage] = useState("");
    const [errorMessage, setErrorMessage] = useState("");
@@ -24,7 +24,6 @@ export default function EditUserInfo() {
     lastName: "",
     username: "",
     email: "",
-    password: "",
     address: "",
     city: "",
     state: "",
@@ -36,43 +35,26 @@ export default function EditUserInfo() {
 
 
 
- //checks password to see if it meets rules 
-function checkPassword(password){
-    const passwordRegex = /^[A-Za-z](?=.*[A-Za-z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{7,}$/;
-
-if (!passwordRegex.test(password)) {
-  alert("Password must be 8+ characters, start with a letter, and include a letter, number, and special character.");
-  return false;
-}
-
-return true
-}
-
-
 async function handleSubmit(e) {
   e.preventDefault();
-
-  if (!checkPassword(formData.password)) {
-    setErrorMessage(
-      "Password must have 1 uppercase, 1 number, and 1 special character."
-    );
-    return;
-  }
-
   try {
-    const username = makeUsername(formData.firstName, formData.lastName);
-
-    // ensure all required fields are non-empty
-    const payload = { ...formData, username };
+  
+    const payload = { ...formData };
     console.log("Sending payload:", payload); //debug line
 
-    const response = await api.post("/users", payload);
+    const response = await api.patch("/edit-user", payload,
+       { headers: {
+           authorization: `Bearer ${token}`
+        }}
+    );
     console.log("User created:", response.data);
 
-    setMessage("Account created successfully!");
-    setTimeout(() => navigate("/login"), 2000);
-  } catch (err) {
-    console.error("Error creating account:", err.response?.data || err);
+    setMessage("Account edited successfully!");
+    setTimeout(() => navigate("/userlist"), 2000);
+  } 
+  
+  catch (err) {
+    console.error("Error editing account:", err.response?.data || err);
     alert(err.response?.data?.message || "Server error");
   }
 }
@@ -94,44 +76,40 @@ async function handleSubmit(e) {
       (      
         <div className="PopDiv">
           <p>
-            There are a few things you'll need to create an account.
-            Firstly, you'll need to choose what type of account you wish
-            to create. 
-          </p> 
-          <p>
-            Accountant Type accounts are the accounts of the standard user.
-            You'll have access to our main accounting services
-          </p>
-          <p>
-            Manager type accounts are used by managers, and they feature
-            multiple user management tools
-          </p>
-          <p>
-            Administrator Type accounts feature high level moderation tools.
-          </p>
-          <p>
-            After Selecting the account type and filling in the information fields
-            Your request will be sent to an administrator for approval.          
-          </p>
+            To change user info, enter the username of the user you want to edit and re-eneter all of the info
+            </p>
           <button onClick={() => setPopupOpen(false)}>Close</button>
         </div>  
       )
       }
         <div className="buttons-container">
-          <h1>Create New User</h1>
+          <h1>Edit User</h1>
             {message && <div className="success-message">{message}</div>}
             { errorMessage && <div className="error-message">{errorMessage}</div>}
+         
+         
           <form className="create-form" onSubmit={handleSubmit}>
+             <label htmlFor="username">Username:</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Enter Username of User you wish to edit" required
+            />
+            
+            <label htmlFor="role">Role:</label>
             {/* user type */}
             <select
               name="userType"
               data-tooltip-id="tooltipA"
               data-tooltip-content="Choose The User Type For Your Account"
               data-tooltip-place="top"
+              id="role"
               value={formData.userType}
               onChange={handleChange}
-               required
-               
+               required  
             >
               <option value="Accountant">Accountant</option>
               <option value="Manager">Manager</option>
@@ -167,16 +145,6 @@ async function handleSubmit(e) {
               value={formData.lastName}
               onChange={handleChange}
               placeholder="Last name" required
-            />
-
-            <label htmlFor="password">Password:</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Password" required
             />
 
             <label htmlFor="address">Address:</label>
@@ -240,7 +208,7 @@ async function handleSubmit(e) {
             />
 
             <label htmlFor="securityAnswer">
-              Security Question: What is your Mother's Maiden name?
+              New Security Answer: What is your Mother's Maiden name?
             </label>
             <input
               type="text"

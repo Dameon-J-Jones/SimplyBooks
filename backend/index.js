@@ -7,6 +7,7 @@ import authRoutes from "./routes/authRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import accountRoutes from "./routes/accountRoutes.js";
 import journalRoutes from "./routes/journalRoutes.js";
+import editUserRoutes from "./routes/editUserRoutes.js"
 
 const app = express();
 app.use(express.json());
@@ -25,7 +26,7 @@ app.use("/auth", authRoutes);
 app.use("/admin", adminRoutes);
 app.use("/account", accountRoutes);
 app.use("/journal", journalRoutes);
-
+app.use("/edit-user", editUserRoutes);
 
 
 
