@@ -31,11 +31,6 @@ app.use("/edit-user", editUserRoutes);
 
 
 
-
-
-
-
-
 app.get("/test", (req, res) => {
   res.send("server works");
 });

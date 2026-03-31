@@ -31,6 +31,9 @@ phone: 1234567890
 DOB: 03.20.2026
 Mother's Maiden name?:Smith
 
+#### SIMPLYBOOKS EMAIL 
+email: simplybooks361@gmail.com
+password: SimplyBooks123!
 
 
 (Admin)

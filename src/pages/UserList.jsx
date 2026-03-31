@@ -6,10 +6,11 @@ import Logo from "../components/Logo";
 import "./UserList.css";
 import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip } from "react-tooltip";
+import axios from "../api/axios";
+
+
 
 const UserList = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [users, setUsers] = useState([]);
   const [suspendDaysMap, setSuspendDaysMap] = useState({});
   const token = localStorage.getItem("token");
@@ -59,10 +60,25 @@ async function verifyToken() {
   }
 }
   
+async function handleStatus(decision, username){
+      const response = await axios.patch(
+      "/edit-user/status",
+      {
+        decision,
+        username,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+console.log(response)
+ await fetchUsers();
+}
 
-useEffect(() => {
-    //verifyToken();
-  const fetchUsers = async () => {
+
+ const fetchUsers = async () => {
     try {
       const response = await api.get("/users");
       setUsers(response.data);
@@ -71,6 +87,9 @@ useEffect(() => {
     }
   };
 
+
+useEffect(() => {
+    //verifyToken();
   fetchUsers();
 }, []);
 
@@ -117,7 +136,7 @@ return (<>
             <td>{user.Phone_Number}</td>
             <td>{user.address_line1}, {user.address_line2}</td>
             <td>{groupMap[user.GroupID]}</td>
-            <td>{statusMap[user.status]}</td>
+            <td>{statusMap[user.status]}<br/><button onClick={()=>{handleStatus('approved', user.UName)}}>Approve</button><button onClick={()=>{handleStatus('reject', user.UName)}}>Deny</button></td>
             <td>{new Date(user.created_on).toLocaleDateString()}</td>
 
             <td>

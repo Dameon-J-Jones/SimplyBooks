@@ -1,6 +1,6 @@
 import pool from "../db.js";
 import { hashPassword } from "../PasswordHash.js";
-
+import { sendEmail } from "../sendEmails.js";
 // GET all users
 export const getUsers = async (req, res) => {
   try {
@@ -88,6 +88,19 @@ export const createUser = async (req, res) => {
     ];
 
     const result = await pool.query(query, values);
+
+    await sendEmail({
+      to: "boomtownboss11@gmail.com", //need to do an admin or all of them
+      subject: "New account has been created",
+      text: `Hello, user ${username} was just created, please approve or deny on the app!`,
+      html: `
+        <h2>Account Created</h2>
+        <p>${username} was created.</p>
+        <a href="http://localhost:5173/UserList">CLICK HERE TO APPORVE OR DENY USER</a>
+      `,
+    });
+
+
     res.status(201).json(result.rows[0]);
   } catch (err) {
     console.error("CREATE USER DB ERROR:", err);
