@@ -49,7 +49,8 @@ async function handleSubmit(e) {
 
 
   try {
-    const username = makeUsername(formData.firstName, formData.lastName);
+    //Status of submitted journal entries is "p" for pending.
+    const status = "p";
 
     // ensure all required fields are non-empty
     const payload = { ...formData, username };
@@ -83,7 +84,10 @@ async function handleSubmit(e) {
       (      
         <div className="PopDiv">
           <p>
-            
+            This is the page to create an individual Journal Entry
+          </p>
+          <p>
+            When entering Debits and credits, make sure that each is in the correct column.
           </p>
           <button onClick={() => setPopupOpen(false)}>Close</button>
         </div>  
