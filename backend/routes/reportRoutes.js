@@ -1,5 +1,5 @@
 import express from "express";
-import {getTrialBalance, getIncomeStatement, getBalanceSheet, getRetainedEarnings} from "../conrollers/reportController.js";
+import {getTrialBalance, getIncomeStatement, getBalanceSheet, getRetainedEarnings} from "../controllers/reportController.js";
 
 const router = express.Router();
 
