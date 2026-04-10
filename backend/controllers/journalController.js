@@ -129,7 +129,7 @@ export const rejectJournalEntry = async (req, res) => {
 
 // Get all journal entries (filter by status/date)
 export const getJournalEntries = async (req, res) => {
-  const { status, startDate, endDate } = req.query;
+  const { status, startDate, endDate, type } = req.query;
 
   let query = `SELECT * FROM "JournalEntry" WHERE 1=1`;
   const params = [];
@@ -145,6 +145,12 @@ export const getJournalEntries = async (req, res) => {
   if (endDate) {
     params.push(endDate);
     query += ` AND "EntryDate"<=$${params.length}`;
+  }
+
+  //for filtering by 'normal' or 'adjusting'
+  if (type) {
+    params.push(type);
+    query += `AND type=$${params.length}`;
   }
 
   try {
