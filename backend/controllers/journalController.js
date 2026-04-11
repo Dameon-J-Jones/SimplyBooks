@@ -129,7 +129,7 @@ export const rejectJournalEntry = async (req, res) => {
 
 // Get all journal entries (filter by status/date)
 export const getJournalEntries = async (req, res) => {
-  const { status, startDate, endDate } = req.query;
+  const { status, startDate, endDate, type } = req.query;
 
   let query = `SELECT * FROM "JournalEntry" WHERE 1=1`;
   const params = [];
@@ -145,6 +145,12 @@ export const getJournalEntries = async (req, res) => {
   if (endDate) {
     params.push(endDate);
     query += ` AND "EntryDate"<=$${params.length}`;
+  }
+
+  //for filtering by 'normal' or 'adjusting'
+  if (type) {
+    params.push(type);
+    query += `AND type=$${params.length}`;
   }
 
   try {
@@ -200,4 +206,23 @@ export const getLedgerByAccountId = async (req, res) => {
     console.error(err);
     res.status(500).json({ message: "Error fetching ledger" });
   }
+};
+
+//upload file attachment to JournalEntry
+//TODO: update db to add attachment field to journalentry
+export const uploadFile = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        await pool.query(
+            `UPDATE "JournalEntry"
+            SET attachment = $1
+            WHERE id = $2`,
+            [req.file.filename, id]
+        );
+
+        res.json({ message : "File uploaded" });
+    } catch (err) {
+        res.status(500).json({ message : "Upload failed" });
+    }
 };
