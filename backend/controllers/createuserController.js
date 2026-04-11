@@ -70,8 +70,9 @@ export const createUser = async (req, res) => {
         "date_of_birth",
         "GroupID",
         "status",
+        "security_question",
         "created_on"
-      ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,CURRENT_TIMESTAMP)
+      ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,CURRENT_TIMESTAMP)
       RETURNING *;
     `;
 
@@ -84,7 +85,8 @@ export const createUser = async (req, res) => {
       address_line2,
       dob,
       groupMap[userType],
-      0
+      0,
+      securityAnswer
     ];
 
     const result = await pool.query(query, values);

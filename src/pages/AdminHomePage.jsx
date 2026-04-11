@@ -54,7 +54,7 @@ useEffect(() => {
 
 const today = new Date();
 const formatted = today.toLocaleDateString();
-const username = data.username || "username";
+const username = response.data.username || "username";
 
 
 

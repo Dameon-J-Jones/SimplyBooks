@@ -31,9 +31,9 @@ async function verifyToken() {
         }
       }
     );
-
+    console.log(response.data)   
     setData(response.data);
-    
+     
 
   } catch (error) {
     console.log(error);
@@ -42,7 +42,7 @@ async function verifyToken() {
 }
 
 useEffect(() => {
-  //verifyToken();
+  verifyToken();
 }, []);
 
 

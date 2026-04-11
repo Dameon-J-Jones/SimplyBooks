@@ -23,7 +23,6 @@ router.get('/manager', verifyToken, authorizeRole(1), (req, res) =>{
 })
 
 
-
 router.get("/test-email", async (req, res) => {
   try {
     await sendEmail({
@@ -39,6 +38,8 @@ router.get("/test-email", async (req, res) => {
     res.status(500).json({ message: "Email failed", error: error.message });
   }
 });
+
+
 
 export default router;
 
