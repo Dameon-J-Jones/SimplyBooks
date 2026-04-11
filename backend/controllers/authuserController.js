@@ -82,6 +82,7 @@ export const loginUser = async (req, res) => {
       
       user: {
         username: user.UName,
+        status: user.status,
         role: user.GroupID,
         profilePic: user.profile_pic, //This is needed for user pfp on the front end
         id: user.id //This is needed for foreign keys across tables

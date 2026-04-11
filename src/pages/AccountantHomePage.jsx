@@ -8,6 +8,7 @@ import "./AccountHomePage.css";
 import AccountInfo from "../components/AccountInfo";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Logout from "../components/Logout";
 
 const AccountantHomePage = () => {
 const [isPopupOpen, setPopupOpen] = useState (false);
@@ -31,7 +32,7 @@ async function verifyToken() {
         }
       }
     );
-    console.log(response.data)   
+  
     setData(response.data);
      
 
@@ -116,6 +117,7 @@ const username = data.username || "username";
       </Link>
      
 <button className="help-button" onClick={() => setPopupOpen(true)}>Help </button>
+<Logout/>
     </div>
 </div>
   );

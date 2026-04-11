@@ -69,8 +69,8 @@ async function handleSubmit(e) {
     const response = await api.post("/users", payload);
     console.log("User created:", response.data);
 
-    setMessage("Account created successfully!");
-    setTimeout(() => navigate("/login"), 2000);
+    setMessage("Account created successfully! Please wait for Admin to approve!");
+    setTimeout(() => navigate("/login"), 5000);
   } catch (err) {
     console.error("Error creating account:", err.response?.data || err);
     alert(err.response?.data?.message || "Server error");

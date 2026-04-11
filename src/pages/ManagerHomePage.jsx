@@ -6,6 +6,7 @@ import { Tooltip } from "react-tooltip";
 import "./HomePage.module.css";
 import {useNavigate } from "react-router-dom";
 import AccountInfo from "../components/AccountInfo";
+import Logout from "../components/Logout";
 
 const ManagerHomePage = () => {
 const token = localStorage.getItem("token");
@@ -106,6 +107,7 @@ const username = data.username || "username";
           >Create New User</button>
       </Link>
 <button className="help-button" onClick={() => setPopupOpen(true)}>Help </button>
+   <Logout/>
     </div>
 </div>
   );

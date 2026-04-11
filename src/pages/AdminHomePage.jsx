@@ -10,6 +10,7 @@ import {useUser} from "../components/UserContext";
 import styles from "./HomePage.module.css";
 import axios from "../api/axios";
 import api from "../api/axios";
+import Logout from "../components/Logout";
 
 
 
@@ -54,7 +55,7 @@ useEffect(() => {
 
 const today = new Date();
 const formatted = today.toLocaleDateString();
-const username = response.data.username || "username";
+const username = data.username || "username";
 
 
 
@@ -128,6 +129,7 @@ return (
           >Chart of Accounts</button>
       </Link>
 <button className="help-button" onClick={() => setPopupOpen(true)}>Help </button>
+    <Logout/>
     </div>
   </div>
 );
