@@ -14,14 +14,23 @@ export default function NavButtons(){
         Chart of Accounts
       </button>
 
+      <button onClick={() => navigate("/EventLog")}>
+        Event Log
+      </button>
+
       <button onClick={() => navigate("/CreateJournalEntry")}>
         Journal Entry
+      </button>
+
+      <button onClick={() => navigate("/journal-list")}>
+        Journal List
       </button>
 
       <button onClick={() => navigate("/UserList")}>
         Users
       </button>
-
+      
+      
       
       <button
         onClick={() => {
