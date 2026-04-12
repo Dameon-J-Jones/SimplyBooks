@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "../api/axios";
 import LongLogo from "../components/LongLogo";
 import AccountInfo from "../components/AccountInfo";
 import "./Ledger.css";
-import 'react-tooltip/dist/react-tooltip.css';
+import "react-tooltip/dist/react-tooltip.css";
 import { Tooltip } from "react-tooltip";
-import {Link} from "react-router-dom"
-
-// Page shows details for one account based on its ID
+import NavButtons from "../components/NavButtons";
 
 const Ledger = () => {
   const { id } = useParams();
@@ -21,42 +19,29 @@ const Ledger = () => {
   const today = new Date();
   const formatted = today.toLocaleDateString();
   const username = "username";
-  const token = localStorage.getItem("token");
-async function verifyToken() {
 
-  if (!token) {
-    navigate("/login");
-    return;
-  }
+  const formatMoney = (value) => {
+    const num = Number(String(value ?? 0).replace(/,/g, ""));
+    if (isNaN(num)) return "0.00";
 
-  try {
-    const response = await axios.get(
-      "http://localhost:5000/accountant-access",
-      {
-        headers: {
-           authorization: `Bearer ${token}`
-        }
-      }
-    );
-
-    console.log("User:", response.data);
-    getData(response.data);
-
-  } catch (error) {
-    console.log("Invalid token");
-    navigate("/login");
-  }
-}
+    return num.toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  };
 
   useEffect(() => {
-    //verifyToken();
     fetchAccount();
   }, [id]);
 
   const fetchAccount = async () => {
     try {
+      setLoading(true);
+      setError("");
+
       const res = await axios.get(`/account/${id}`);
       setAccount(res.data);
+      console.log("Ledger account:", res.data);
     } catch (err) {
       console.error("Error loading account:", err);
       setError("Could not load account.");
@@ -67,7 +52,8 @@ async function verifyToken() {
 
   return (
     <div className="page">
-      <Tooltip id="tooltipA"/>
+      <Tooltip id="tooltipA" />
+
       <section className="header">
         <h2 className="date">{formatted}</h2>
         <div className="logo">
@@ -75,29 +61,35 @@ async function verifyToken() {
         </div>
         <AccountInfo username={username} />
       </section>
-
+      <NavButtons/>
 
       <div className="navBar">
         <Link to="/userlist">
-          <button type="button" className="create-user-button"
-          data-tooltip-id="tooltipA"
-          data-tooltip-content="User List"
-          data-tooltip-place="bottom"
-          >User List</button>
+          <button
+            type="button"
+            className="create-user-button"
+            data-tooltip-id="tooltipA"
+            data-tooltip-content="User List"
+            data-tooltip-place="bottom"
+          >
+            User List
+          </button>
         </Link>
+
         <Link to="/accounts">
-          <button type="button" className="create-user-button"
-          data-tooltip-id="tooltipA"
-          data-tooltip-content="Chart of Accounts"
-          data-tooltip-place="bottom"
-          >Charts</button>
+          <button
+            type="button"
+            className="create-user-button"
+            data-tooltip-id="tooltipA"
+            data-tooltip-content="Chart of Accounts"
+            data-tooltip-place="bottom"
+          >
+            Charts
+          </button>
         </Link>
       </div>
 
       <div className="ledger-container">
-        <button onClick={() => navigate("/accounts")}>
-          Back
-        </button>
 
         <h1>Ledger</h1>
 
@@ -106,10 +98,23 @@ async function verifyToken() {
 
         {account && (
           <div className="ledger-card">
-            <p><strong>Name:</strong> {account.account_name}</p>
-            <p><strong>Number:</strong> {account.account_number}</p>
-            <p><strong>Category:</strong> {account.category}</p>
-            <p><strong>Balance:</strong> {account.balance}</p>
+            <p><strong>Name:</strong> {account.account_name ?? "N/A"}</p>
+            <p><strong>Number:</strong> {account.account_number ?? "N/A"}</p>
+            <p><strong>Description:</strong> {account.description || "N/A"}</p>
+            <p><strong>Normal Side:</strong> {account.normal_side || "N/A"}</p>
+            <p><strong>Category:</strong> {account.category ?? "N/A"}</p>
+            <p><strong>Subcategory:</strong> {account.subcategory || "N/A"}</p>
+            <p><strong>Initial Balance:</strong> ${formatMoney(account.initial_balance)}</p>
+            <p><strong>Debit:</strong> ${formatMoney(account.debit)}</p>
+            <p><strong>Credit:</strong> ${formatMoney(account.credit)}</p>
+            <p><strong>Balance:</strong> ${formatMoney(account.balance)}</p>
+            <p><strong>Account Order:</strong> {account.account_order ?? "N/A"}</p>
+            <p><strong>Statement:</strong> {account.statement || "N/A"}</p>
+            <p><strong>Comment:</strong> {account.comment || "N/A"}</p>
+            <p>
+              <strong>Status:</strong>{" "}
+              {account.is_active === false ? "Inactive" : "Active"}
+            </p>
           </div>
         )}
       </div>

@@ -9,6 +9,7 @@ import AccountInfo from "../components/AccountInfo";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Logout from "../components/Logout";
+import NavButtons from "../components/NavButtons";
 
 const AccountantHomePage = () => {
 const [isPopupOpen, setPopupOpen] = useState (false);
@@ -84,6 +85,7 @@ const username = data.username || "username";
         </Link>
       </div>
 
+    <NavButtons/>
 
 
 

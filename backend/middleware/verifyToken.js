@@ -26,7 +26,7 @@ export default async function verifyToken(req, res, next){
     try {
         //uses method to see if token is correct
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        console.log("decoded:", decoded);
+       
 
 
          // get user id from token (adjust if needed)

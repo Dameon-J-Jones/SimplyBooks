@@ -11,6 +11,7 @@ import styles from "./HomePage.module.css";
 import axios from "../api/axios";
 import api from "../api/axios";
 import Logout from "../components/Logout";
+import NavButtons from "../components/NavButtons"
 
 
 
@@ -103,7 +104,7 @@ return (
           >Charts</button>
         </Link>
       </div>
- 
+      <NavButtons/>
 
    <div className="body">
     <h1>Admin</h1>

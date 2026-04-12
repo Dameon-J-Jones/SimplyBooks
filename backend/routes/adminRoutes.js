@@ -16,9 +16,9 @@ router.get('/admin-access', verifyToken, authorizeRole(2), (req, res) =>{
 router.get('/accountant-access', verifyToken, authorizeRole(0), (req, res) =>{
     res.json(req.user)
 })
+ 
 
-
-router.get('/manager', verifyToken, authorizeRole(1), (req, res) =>{
+router.get('/manager-access', verifyToken, authorizeRole(1), (req, res) =>{
     res.json(req.user)
 })
 
@@ -39,6 +39,16 @@ router.get("/test-email", async (req, res) => {
   }
 });
 
+router.get('/all-access', verifyToken, (req, res) => {
+  const role = Number(req.user.role);
+
+  // allow accountant, manager, admin
+  if (![0, 1, 2].includes(role)) {
+    return res.status(403).json({ message: "Access denied" });
+  }
+
+  res.json(req.user);
+});
 
 
 export default router;

@@ -4,10 +4,12 @@
   align-items: center;
   min-height: 100vh;
   background-color: gray;
-  padding-top: 20px;
+  padding-top: 10px;
+ 
 }
 
-.buttons-container {
+.buttons-container { 
+  margin-top: -150px;
   background-color: lightgray;
   width: 600px;
   padding: 30px;

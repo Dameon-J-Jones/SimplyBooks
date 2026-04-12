@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import Logo from "../components/Logo";
 import "./Login.css";
 import LongLogo from "../components/LongLogo";
@@ -21,6 +21,21 @@ const Login = () => {
 
   const [isPopupOpen, setPopupOpen] = useState (false);
 
+  useEffect(() => {
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
+
+  const roleRoutes = {
+    0: "/AccountantHome",
+    1: "/ManagerHome",
+    2: "/AdminHome"
+  };
+
+  if (token && role !== null) {
+    navigate(roleRoutes[Number(role)] || "/", { replace: true });
+  }
+}, [navigate]);
+
   const handleSubmit = async (e) => {
   e.preventDefault();
 
@@ -38,6 +53,7 @@ const Login = () => {
     }
 
     localStorage.setItem("token", token);
+    localStorage.setItem("role", user.role);
     setAuth({ user, token });
     setCurrentUser(user);
 

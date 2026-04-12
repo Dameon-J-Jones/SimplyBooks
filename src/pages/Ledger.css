@@ -1,5 +1,11 @@
 .ledger-container {
+  margin-top: 5px;
   padding: 30px;
+}
+
+.ledger-container button{
+  margin-bottom: 20px;
+ 
 }
 
 .ledger-card {

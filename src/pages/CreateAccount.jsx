@@ -6,6 +6,7 @@ import api from "../api/axios";
 import { makeUsername } from "../utils/MakeUsername";
 import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip } from "react-tooltip";
+import NavButtons from "../components/NavButtons";
 
 export default function CreateAccount() {
 
@@ -117,6 +118,8 @@ async function handleSubmit(e) {
         </div>  
       )
       }
+
+      
         <div className="buttons-container">
           <h1>Create New User</h1>
             {message && <div className="success-message">{message}</div>}

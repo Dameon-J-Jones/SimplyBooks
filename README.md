@@ -19,21 +19,16 @@ React + Vite frontend for Software Application Domain project.
 
 ### Logins for Testing
 (Accountant)
-email: accountant@email.com
-firstname: AccountantFname
-Last name: AccountantLname
+Uname:taccountant0426
 Password: Pass1234!
-street: test st
-city: test city
-state: GA
-zip: 00000
-phone: 1234567890
-DOB: 03.20.2026
-Mother's Maiden name?:Smith
 
 #### SIMPLYBOOKS EMAIL 
 email: simplybooks361@gmail.com
 password: SimplyBooks123!
+
+(Manager)
+Uname: mtest0426
+Password: Pass1234!
 
 
 (Admin)

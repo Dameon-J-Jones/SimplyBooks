@@ -6,6 +6,7 @@ import api from "../api/axios";
 import { makeUsername } from "../utils/MakeUsername";
 import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip } from "react-tooltip";
+import NavButtons from "../components/NavButtons";
 
 export default function CreateJournalEntry() {
 
@@ -77,8 +78,9 @@ async function handleSubmit(e) {
   return (
     <>
       <div className="logo"><LongLogo /></div>
-      <Tooltip id="tooltipA"/>
+      <Tooltip id="tooltipA"/><NavButtons/>
       <div className="create-account-container">
+        
         {/*Popup  Template*/}
       {isPopupOpen &&
       (      
