@@ -114,13 +114,6 @@ const JournalEntryDetails = () => {
           }}
         >
           <h1>Journal Entry Details</h1>
-
-          <button
-            type="button"
-            onClick={() => navigate(`/journal/edit/${id}`)}
-          >
-            Edit Journal
-          </button>
         </div>
 
         {loading && <p>Loading...</p>}
