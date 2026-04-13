@@ -14,7 +14,6 @@ export default function CreateJournalEntry() {
   const [message, setMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isPopupOpen, setPopupOpen] = useState(false);
-
   const [data, setData] = useState({});
   const [isAuthorized, setIsAuthorized] = useState(false);
 
@@ -158,18 +157,43 @@ export default function CreateJournalEntry() {
         ],
       };
 
-      await axios.post("/journal/create", payload, {
+      const journalRes = await axios.post("/journal/create", payload, {
         headers: {
           authorization: `Bearer ${token}`,
         },
       });
+
+      const journalEntryID =
+        journalRes?.data?.journalEntryID ||
+        journalRes?.data?.journalId ||
+        journalRes?.data?.id;
+
+      if (!journalEntryID) {
+        throw new Error("Journal created but no journal id was returned.");
+      }
+
+      await axios.post(
+        "/notifications/create",
+        {
+          user_id: data.user,
+          message: "New Journal Entry added!",
+          journalEntryID,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       handleReset();
       setMessage("Journal Entry Submitted!");
     } catch (err) {
       console.error("FULL ERROR:", err.response?.data || err);
       setErrorMessage(
-        err.response?.data?.message || "Failed to submit journal entry."
+        err.response?.data?.message ||
+          err.message ||
+          "Failed to submit journal entry."
       );
     }
   }

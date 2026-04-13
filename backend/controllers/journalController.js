@@ -26,43 +26,42 @@ const logEvent = async (eventType, beforeData, afterData, userId, recordId = nul
 export const createJournalEntry = async (req, res) => {
   const { entryDate, description, referenceNumber, createdBy, lines } = req.body;
 
+  const client = await pool.connect();
+
   try {
-    const result = await pool.query(
+    await client.query("BEGIN");
+
+    const journalResult = await client.query(
       `INSERT INTO "JournalEntry"
-       ("EntryDate", "Description", "ReferenceNumber", "CreatedAt", "CreatedBy", status, type)
-       VALUES ($1, $2, $3, NOW(), $4, 'PENDING', 'GENERAL')
-       RETURNING *`,
+       ("EntryDate", "Description", "ReferenceNumber", "CreatedBy", status, "CreatedAt")
+       VALUES ($1, $2, $3, $4, 'PENDING', NOW())
+       RETURNING id`,
       [entryDate, description, referenceNumber, createdBy]
     );
 
-    const journalEntry = result.rows[0];
+    const journalEntryID = journalResult.rows[0].id;
 
     for (const line of lines) {
-      await pool.query(
-        `INSERT INTO "JournalEntryLine" ("JournalEntryID", "AccountID", "Debit", "Credit")
-         VALUES ($1, $2, $3, $4)`,
-        [journalEntry.id, line.accountId, line.debit || 0, line.credit || 0]
+            await client.query(
+        `INSERT INTO "JournalEntryLine"
+        ("JournalEntryID", "AccountID", "Debit", "Credit")
+        VALUES ($1, $2, $3, $4)`,
+        [journalEntryID, line.accountId, line.debit, line.credit]
       );
     }
 
-    await logEvent("CREATE", null, { journalEntry, lines }, createdBy);
+    await client.query("COMMIT");
 
-    await sendEmail({
-      to: "boomtownboss11@gmail.com", //need to do an manager or all of them
-      subject: "New Journal Entry has been created",
-      text: `Hello Manager, a new Journal entry was just created, please approve or deny on the app!`,
-      html: `
-        <h2>Account Created</h2>
-        <p>Journal entry was created.</p>
-        <a href="http://localhost:5173/journal-list">CLICK HERE TO APPORVE OR DENY USER</a>
-      `,
+    res.status(201).json({
+      message: "Journal entry created successfully",
+      journalEntryID,
     });
-
-
-    res.status(201).json({ journalEntry });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Error creating journal entry" });
+    await client.query("ROLLBACK");
+    console.error("Create journal error:", err);
+    res.status(500).json({ message: "Failed to create journal entry" });
+  } finally {
+    client.release();
   }
 };
 
@@ -104,10 +103,20 @@ export const approveJournalEntry = async (req, res) => {
     );
     const prevData = prevResult.rows[0];
 
+    if (!prevData) {
+      return res.status(404).json({ message: "Journal entry not found" });
+    }
+
     await pool.query(
       `UPDATE "JournalEntry"
        SET status = 'APPROVED', "approvedAt" = NOW()
        WHERE id = $1`,
+      [id]
+    );
+
+    await pool.query(
+      `DELETE FROM "Notification"
+       WHERE "journalEntryID" = $1`,
       [id]
     );
 
@@ -137,6 +146,10 @@ export const rejectJournalEntry = async (req, res) => {
     );
     const prevData = prevResult.rows[0];
 
+    if (!prevData) {
+      return res.status(404).json({ message: "Journal entry not found" });
+    }
+
     await pool.query(
       `UPDATE "JournalEntry"
        SET status = 'REJECTED',
@@ -144,6 +157,12 @@ export const rejectJournalEntry = async (req, res) => {
            "rejectedAt" = NOW()
        WHERE id = $2`,
       [reason, id]
+    );
+
+    await pool.query(
+      `DELETE FROM "Notification"
+       WHERE "journalEntryID" = $1`,
+      [id]
     );
 
     const afterResult = await pool.query(

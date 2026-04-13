@@ -1,0 +1,119 @@
+.financial-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.financial-toolbar {
+  display: flex;
+  align-items: end;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.financial-toolbar-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.financial-toolbar-group label {
+  font-weight: 600;
+}
+
+.financial-select,
+.financial-input {
+  padding: 10px 12px;
+  min-width: 220px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.financial-button-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: end;
+}
+
+.financial-button-row button {
+  min-width: 110px;
+}
+
+.financial-filters {
+  display: flex;
+  align-items: end;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.financial-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.financial-filter-group label {
+  font-weight: 600;
+}
+
+.financial-email-row {
+  display: flex;
+  align-items: end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.statement-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.statement-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.statement-title {
+  margin-top: 0;
+  margin-bottom: 14px;
+}
+
+.financial-status-messages {
+  margin: 14px 0 20px;
+}
+
+.financial-status-messages p {
+  margin: 0 0 10px 0;
+}
+
+@media (max-width: 900px) {
+  .financial-toolbar,
+  .financial-filters,
+  .financial-email-row,
+  .financial-button-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .financial-select,
+  .financial-input {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .financial-button-row button {
+    width: 100%;
+  }
+}

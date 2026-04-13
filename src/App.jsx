@@ -18,7 +18,8 @@ import EventLog from "./pages/EventLog";
 import JournalList from "./pages/JournalList";
 import JournalEntryDetails from "./pages/JournalEntryDetails";
 import EditJournalEntry from "./pages/EditJournalPage";
-
+import FinancialStatements from "./pages/FinancialStatements";
+import JournalNotifcation from "./components/JournalNotification";
 
 export default function App() {
   return (
@@ -45,7 +46,8 @@ export default function App() {
         <Route path="/EditUser" element={<EditUserInfo />} />
         <Route path="/journal/:id" element={<JournalEntryDetails />} />
         <Route path="/journal/edit/:id" element={<EditJournalEntry />} />
-
+        <Route path="/financial-statements" element={<FinancialStatements />} />
+        <Route path="/notify" element={<JournalNotifcation />} />
        
 
         {/* catch-all */}

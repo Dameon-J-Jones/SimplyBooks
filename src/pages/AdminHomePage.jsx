@@ -12,7 +12,7 @@ import axios from "../api/axios";
 import api from "../api/axios";
 import Logout from "../components/Logout";
 import NavButtons from "../components/NavButtons"
-
+import JournalNotification from "../components/JournalNotification";
 
 
 const AdminHomePage = () => {
@@ -22,6 +22,7 @@ const [isPopupOpen, setPopupOpen] = useState (false);
 const token = localStorage.getItem("token");
 const [data, setData] = useState({})
 const navigate = useNavigate();
+
 
 
 async function verifyToken() {
@@ -108,6 +109,9 @@ return (
 
    <div className="body">
     <h1>Admin</h1>
+<div className={styles.Notifcation}>
+  <JournalNotification />
+</div>
       <Link to="/UserList">
           <button type="button" className="create-user-button"
           data-tooltip-id="tooltipA"

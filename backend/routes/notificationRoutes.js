@@ -4,6 +4,6 @@ import { createNotification, getNotifications } from "../controllers/notificatio
 const router = express.Router();
 
 router.post("/create", createNotification);
-router.get("/notifications/:userID", getNotifications);
+router.get("/notifications", getNotifications);
 
 export default router;

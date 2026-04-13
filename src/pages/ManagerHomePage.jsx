@@ -3,12 +3,14 @@ import { useState, useEffect } from "react";
 import LongLogo from "../components/LongLogo";
 import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip } from "react-tooltip";
-import "./HomePage.module.css";
+import styles from "./HomePage.module.css";
 import {useNavigate } from "react-router-dom";
 import AccountInfo from "../components/AccountInfo";
 import Logout from "../components/Logout";
 import axios from "../api/axios";
 import NavButtons from "../components/NavButtons";
+import JournalNotification from "../components/JournalNotification";
+
 
 const ManagerHomePage = () => {
 const token = localStorage.getItem("token");
@@ -95,6 +97,11 @@ const username = data.username || "username";
 <div className="body">
   
   <h1>Manager</h1>
+
+  <div className={styles.Notifcation}>
+    <JournalNotification />
+  </div>
+
       <Link to="/UserList">
           <button type="button" className="create-user-button"
           data-tooltip-id="tooltipA"

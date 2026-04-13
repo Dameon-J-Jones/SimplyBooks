@@ -118,9 +118,6 @@ const EventLog = () => {
   const getAction = (log) =>
     getField(log, ["EventType", "eventType", "action"]) || "N/A";
 
-  const getAccountId = (log) =>
-    getField(log, ["RecordID", "recordId", "account_id"]) || "N/A";
-
   const getUserId = (log) =>
     getField(log, ["PerformedBy", "performedBy", "user_id"]) || "N/A";
 
@@ -136,6 +133,27 @@ const EventLog = () => {
     parseMaybeJson(
       getField(log, ["NewValues", "newValues", "after_data", "afterData"])
     );
+
+  const getAccountId = (log) => {
+    const directId = getField(log, ["RecordID", "recordId", "account_id"]);
+    if (directId !== null && directId !== undefined) {
+      return directId;
+    }
+
+    const afterImage = getAfterImage(log);
+
+    if (afterImage && Array.isArray(afterImage.lines) && afterImage.lines.length > 0) {
+      const ids = afterImage.lines
+        .map((line) => line.AccountID || line.account_id || line.accountId)
+        .filter((id) => id !== null && id !== undefined);
+
+      if (ids.length > 0) {
+        return ids.join(", ");
+      }
+    }
+
+    return "N/A";
+  };
 
   const formatDateTime = (value) => {
     if (!value) return "N/A";
@@ -163,34 +181,56 @@ const EventLog = () => {
       .trim();
   };
 
-  const formatValue = (value) => {
-    if (value === null || value === undefined || value === "") return "N/A";
-    if (typeof value === "boolean") return value ? "Yes" : "No";
-    return String(value);
+  const renderNestedValue = (value) => {
+    if (value === null || value === undefined || value === "") {
+      return <span>N/A</span>;
+    }
+
+    if (
+      typeof value === "string" ||
+      typeof value === "number" ||
+      typeof value === "boolean"
+    ) {
+      return <span>{String(value)}</span>;
+    }
+
+    if (Array.isArray(value)) {
+      return (
+        <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+          {value.map((item, index) => (
+            <div
+              key={index}
+              style={{
+                paddingLeft: "10px",
+                borderLeft: "2px solid #ddd",
+              }}
+            >
+              <strong>Item {index + 1}</strong>
+              {renderNestedValue(item)}
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    if (typeof value === "object") {
+      return (
+        <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+          {Object.entries(value).map(([k, v]) => (
+            <div key={k}>
+              <strong>{formatLabel(k)}:</strong> {renderNestedValue(v)}
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    return <span>{String(value)}</span>;
   };
 
   const renderImageData = (value, emptyText) => {
     if (!value) return <span>{emptyText}</span>;
-
-    if (typeof value !== "object") {
-      return <span>{String(value)}</span>;
-    }
-
-    const entries = Object.entries(value);
-
-    if (entries.length === 0) {
-      return <span>{emptyText}</span>;
-    }
-
-    return (
-      <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-        {entries.map(([key, val]) => (
-          <div key={key}>
-            <strong>{formatLabel(key)}:</strong> {formatValue(val)}
-          </div>
-        ))}
-      </div>
-    );
+    return renderNestedValue(value);
   };
 
   const filteredLogs = useMemo(() => {
@@ -347,9 +387,9 @@ const EventLog = () => {
           <div className="PopDiv">
             <h3>Help</h3>
             <p>
-              The Event Log displays account change history, including the
-              action taken, the user who made the change, the date and time,
-              and the before and after images of the account.
+              The Event Log displays account and journal change history,
+              including the action taken, the user who made the change,
+              the date and time, and the before and after images.
             </p>
             <button onClick={() => setPopupOpen(false)}>Close</button>
           </div>

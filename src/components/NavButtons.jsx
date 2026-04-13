@@ -30,8 +30,8 @@ export default function NavButtons(){
         Users
       </button>
 
-      <button onClick={() => navigate("/journal/edit")}>
-        Journal Edit
+      <button onClick={() => navigate("/financial-statements")}>
+        Financial Statements
       </button>
       
       
