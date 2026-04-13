@@ -269,7 +269,7 @@ const EditJournalEntry = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); 
     setError("");
     setSuccess("");
 
@@ -277,7 +277,7 @@ const EditJournalEntry = () => {
 
     try {
       await axios.put(
-        `/journal/${id}/edit`,
+        `/journal/editjournal/${id}`,
         {
           entryDate: formData.entryDate,
           description: formData.description.trim(),

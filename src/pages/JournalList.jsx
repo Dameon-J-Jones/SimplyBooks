@@ -477,25 +477,35 @@ const JournalList = () => {
                     <td>{formatMoney(getAmount(entry))}</td>
                     <td>{getCreatedBy(entry) || "N/A"}</td>
 
-                    {service === "pending" && (role == 1 || role == 2) && (
-                      <td onClick={(e) => e.stopPropagation()}>
-                        <div className="journal-action-cell">
-                          <button onClick={() => handleApprove(entry.id)}>
-                            Approve
-                          </button>
-                          <input
-                            placeholder="Reason"
-                            value={selectedReasons[entry.id] || ""}
-                            onChange={(e) =>
-                              handleReasonChange(entry.id, e.target.value)
-                            }
-                          />
-                          <button onClick={() => handleReject(entry.id)}>
-                            Reject
-                          </button>
-                        </div>
-                      </td>
-                    )}
+                    {service === "pending" && (
+                    <td onClick={(e) => e.stopPropagation()}>
+                      <div className="journal-action-cell">
+                        <button onClick={() => navigate(`/journal/edit/${entry.id}`)}>
+                          Edit
+                        </button>
+
+                        {(role == 1 || role == 2) && (
+                          <>
+                            <button onClick={() => handleApprove(entry.id)}>
+                              Approve
+                            </button>
+
+                            <input
+                              placeholder="Reason"
+                              value={selectedReasons[entry.id] || ""}
+                              onChange={(e) =>
+                                handleReasonChange(entry.id, e.target.value)
+                              }
+                            />
+
+                            <button onClick={() => handleReject(entry.id)}>
+                              Reject
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    </td>
+                  )}
                   </tr>
                 ))
               ) : (

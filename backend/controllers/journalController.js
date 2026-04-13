@@ -218,7 +218,7 @@ export const getJournalEntryById = async (req, res) => {
     console.error(err);
     res.status(500).json({ message: "Error fetching journal entry" });
   }
-}; 
+};  
 
 // Ledger for account
 export const getLedgerByAccountId = async (req, res) => {

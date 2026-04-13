@@ -26,6 +26,6 @@ router.get("/ledger/:accountId", getLedgerByAccountId); // Get ledger for an acc
 router.get("/", getJournalEntries); // Get all journal entries (optionally filter by status/date)
 router.get("/:id", getJournalEntryById); // Get a single journal entry with lines
 router.post("/:id/upload", upload.single("file"), uploadFile); //upload file attachment to journal entry
-router.put("/editjournal:id", editJournalEntry); //edit journal entries, but ONLY if pending or draft
+router.put("/editjournal/:id", editJournalEntry); //edit journal entries, but ONLY if pending or draft
 
 export default router;
