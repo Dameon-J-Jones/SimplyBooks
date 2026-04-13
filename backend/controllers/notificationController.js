@@ -23,5 +23,3 @@ export const getNotifications = async (req, res) => {
 
     res.json(result.rows);
 };
-
-//TODO: getter method and make db table
