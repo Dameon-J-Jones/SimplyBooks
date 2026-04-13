@@ -412,7 +412,17 @@ const ChartOfAccounts = () => {
   }}
 >
   <h1>Chart of Accounts</h1>
-
+      {/*Popup  Template*/}
+      {isPopupOpen &&
+      (      
+        <div className="PopDiv">
+          <p>
+          Accountants can securely manage financial records, track transactions, generate reports, and oversee user accounts within the system.
+          </p> 
+          <button onClick={() => setPopupOpen(false)}>Close</button>
+        </div>  
+      )
+      }
   <button
     onClick={() => setPopupOpen(true)}
     data-tooltip-id="tooltipA"
@@ -423,14 +433,6 @@ const ChartOfAccounts = () => {
   </button>
 </div>
 
-          <button
-            onClick={() => setPopupOpen(true)}
-            data-tooltip-id="tooltipA"
-            data-tooltip-content="Help"
-            data-tooltip-place="top"
-          >
-            Help
-          </button>
         </div>
 
         <div className="service-box">
