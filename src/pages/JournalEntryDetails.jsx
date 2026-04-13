@@ -18,6 +18,7 @@ const JournalEntryDetails = () => {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [isPopupOpen, setPopupOpen] = useState (false);
 
   const token = localStorage.getItem("token");
 
@@ -99,7 +100,19 @@ const JournalEntryDetails = () => {
 
       <div className="coa-container">
         <h1>Journal Entry Details</h1>
-
+      {/*Popup  Template*/}
+      {isPopupOpen &&
+      (      
+        <div className="PopDiv">
+          <p>
+            This page displays submitted journal entries. Include is their approval status, including reasoning for why a journal entry 
+            would have been rejected.
+          </p> 
+          <button onClick={() => setPopupOpen(false)}>Close</button>
+        </div>  
+      )
+      }
+      <button className="help-button" onClick={() => setPopupOpen(true)}>Help </button>
         {loading && <p>Loading...</p>}
         {error && <p className="error-text">{error}</p>}
 

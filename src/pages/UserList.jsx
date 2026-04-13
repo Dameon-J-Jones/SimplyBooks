@@ -15,6 +15,7 @@ const UserList = () => {
   const [users, setUsers] = useState([]);
   const [suspendDaysMap, setSuspendDaysMap] = useState({});
   const token = localStorage.getItem("token");
+  const [isPopupOpen, setPopupOpen] = useState (false);
 
   const suspendUser = async (username, days) => {
     try{
@@ -97,7 +98,7 @@ useEffect(() => {
 return (<>
 <div className="navbuttons"><NavButtons/></div>
 <div className="user-table-container">
-  
+  <Tooltip id="tooltipA" />
       
       
   <table className="user-table">
@@ -154,6 +155,28 @@ return (<>
   </table>
  
 </div> 
+    <button
+      onClick={() => setPopupOpen(true)}
+      data-tooltip-id="tooltipA"
+      data-tooltip-content="Help"
+      data-tooltip-place="top"
+    >
+    Help
+    </button>
+              {/*Popup  Template*/}
+      {isPopupOpen &&
+      (      
+        <div className="PopDiv">
+          <p>
+          This page displays a list of users registered within the system. Individual users can be temporarily suspended for a set amount of time.
+          </p> 
+          <p>
+            In addition, by following the edit user link, individual user information can be editted.
+          </p>
+          <button onClick={() => setPopupOpen(false)}>Close</button>
+        </div>  
+      )
+      }
 <Link to="/EditUser" className="edit-user-link">
   <button type="button" className="edit-user-button"
           data-tooltip-id="tooltipA"
