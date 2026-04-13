@@ -71,6 +71,9 @@ const EventLog = () => {
           recordId: filters.account_id,
           date: filters.date,
         },
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
       });
 
       setLogs(Array.isArray(response.data) ? response.data : []);
@@ -115,6 +118,9 @@ const EventLog = () => {
     return value;
   };
 
+  const getEventLogId = (log) =>
+    getField(log, ["id", "EventLogID", "eventLogId"]) || "N/A";
+
   const getAction = (log) =>
     getField(log, ["EventType", "eventType", "action"]) || "N/A";
 
@@ -135,24 +141,19 @@ const EventLog = () => {
     );
 
   const getAccountId = (log) => {
-    const directId = getField(log, ["RecordID", "recordId", "account_id"]);
-    if (directId !== null && directId !== undefined) {
-      return directId;
-    }
-
+    const beforeImage = getBeforeImage(log);
     const afterImage = getAfterImage(log);
 
-    if (afterImage && Array.isArray(afterImage.lines) && afterImage.lines.length > 0) {
-      const ids = afterImage.lines
-        .map((line) => line.AccountID || line.account_id || line.accountId)
-        .filter((id) => id !== null && id !== undefined);
+    const id =
+      getField(log, ["RecordID", "recordId", "AccountID", "accountId", "account_id"]) ||
+      getField(afterImage, ["id", "ID", "AccountID", "accountId", "account_id"]) ||
+      getField(beforeImage, ["id", "ID", "AccountID", "accountId", "account_id"]) ||
+      getField(afterImage?.journal, ["id", "ID"]) ||
+      getField(beforeImage?.journal, ["id", "ID"]) ||
+      getField(afterImage?.journalEntry, ["id", "ID"]) ||
+      getField(beforeImage?.journalEntry, ["id", "ID"]);
 
-      if (ids.length > 0) {
-        return ids.join(", ");
-      }
-    }
-
-    return "N/A";
+    return id ?? "N/A";
   };
 
   const formatDateTime = (value) => {
@@ -351,6 +352,7 @@ const EventLog = () => {
               <table className="coa-table">
                 <thead>
                   <tr>
+                    <th>Event ID</th>
                     <th>Action</th>
                     <th>Account ID</th>
                     <th>User ID</th>
@@ -363,7 +365,8 @@ const EventLog = () => {
                 <tbody>
                   {filteredLogs.length > 0 ? (
                     filteredLogs.map((log, index) => (
-                      <tr key={log.id || index}>
+                      <tr key={getEventLogId(log) || index}>
+                        <td>{getEventLogId(log)}</td>
                         <td>{getAction(log)}</td>
                         <td>{getAccountId(log)}</td>
                         <td>{getUserId(log)}</td>
@@ -374,7 +377,7 @@ const EventLog = () => {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="6">No event logs found</td>
+                      <td colSpan="7">No event logs found</td>
                     </tr>
                   )}
                 </tbody>

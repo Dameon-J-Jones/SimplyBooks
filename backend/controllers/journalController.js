@@ -25,25 +25,26 @@ const logEvent = async (eventType, beforeData, afterData, userId, recordId = nul
 // Create a journal entry (draft) 
 export const createJournalEntry = async (req, res) => {
   const { entryDate, description, referenceNumber, createdBy, lines } = req.body;
+  const client = await pool.connect();
 
   try {
     await client.query("BEGIN");
 
     const journalResult = await client.query(
       `INSERT INTO "JournalEntry"
-       ("EntryDate", "Description", "ReferenceNumber", "CreatedAt", "CreatedBy", status, type)
-       VALUES ($1, $2, $3, NOW(), $4, 'PENDING', 'GENERAL')
-       RETURNING *`,
+       ("EntryDate", "Description", "ReferenceNumber", "CreatedBy", status, "CreatedAt")
+       VALUES ($1, $2, $3, $4, 'PENDING', NOW())
+       RETURNING id`,
       [entryDate, description, referenceNumber, createdBy]
     );
 
     const journalEntryID = journalResult.rows[0].id;
 
     for (const line of lines) {
-            await client.query(
+      await client.query(
         `INSERT INTO "JournalEntryLine"
-        ("JournalEntryID", "AccountID", "Debit", "Credit")
-        VALUES ($1, $2, $3, $4)`,
+         ("JournalEntryID", "AccountID", "Debit", "Credit")
+         VALUES ($1, $2, $3, $4)`,
         [journalEntryID, line.accountId, line.debit, line.credit]
       );
     }
@@ -284,6 +285,7 @@ export const uploadFile = async (req, res) => {
 
 
 //get event logs
+// get event logs
 export const getEventLogs = async (req, res) => {
   const { eventType, performedBy, recordId, date } = req.query;
 
@@ -300,12 +302,12 @@ export const getEventLogs = async (req, res) => {
   }
 
   if (performedBy) {
-    params.push(performedBy);
+    params.push(`%${performedBy}%`);
     query += ` AND CAST("PerformedBy" AS TEXT) ILIKE $${params.length}`;
   }
 
   if (recordId) {
-    params.push(recordId);
+    params.push(`%${recordId}%`);
     query += ` AND CAST("RecordID" AS TEXT) ILIKE $${params.length}`;
   }
 

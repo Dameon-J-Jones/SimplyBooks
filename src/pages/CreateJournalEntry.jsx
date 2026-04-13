@@ -16,6 +16,7 @@ export default function CreateJournalEntry() {
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [data, setData] = useState({});
   const [isAuthorized, setIsAuthorized] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const token = localStorage.getItem("token");
 
@@ -90,6 +91,11 @@ export default function CreateJournalEntry() {
     }));
   }
 
+  function handleFileChange(e) {
+    const file = e.target.files?.[0] || null;
+    setSelectedFile(file);
+  }
+
   function handleReset() {
     setFormData({
       description: "",
@@ -98,6 +104,7 @@ export default function CreateJournalEntry() {
     });
     setDebitAccount("");
     setCreditAccount("");
+    setSelectedFile(null);
     setErrorMessage("");
   }
 
@@ -170,6 +177,18 @@ export default function CreateJournalEntry() {
 
       if (!journalEntryID) {
         throw new Error("Journal created but no journal id was returned.");
+      }
+
+      if (selectedFile) {
+        const uploadData = new FormData();
+        uploadData.append("file", selectedFile);
+
+        await axios.post(`/journal/${journalEntryID}/upload`, uploadData, {
+          headers: {
+            authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        });
       }
 
       await axios.post(
@@ -310,6 +329,17 @@ export default function CreateJournalEntry() {
                         onChange={handleChange}
                         placeholder="Description"
                         required
+                      />
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Attachment</td>
+                    <td colSpan="2">
+                      <input
+                        type="file"
+                        name="file"
+                        onChange={handleFileChange}
                       />
                     </td>
                   </tr>
