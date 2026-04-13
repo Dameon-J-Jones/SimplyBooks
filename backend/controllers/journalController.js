@@ -218,7 +218,7 @@ export const getJournalEntryById = async (req, res) => {
     console.error(err);
     res.status(500).json({ message: "Error fetching journal entry" });
   }
-}; 
+};  
 
 // Ledger for account
 export const getLedgerByAccountId = async (req, res) => {
@@ -306,5 +306,93 @@ export const getEventLogs = async (req, res) => {
   } catch (err) {
     console.error("Error fetching event logs:", err);
     res.status(500).json({ message: "Error fetching event logs" });
+  }
+};
+
+export const editJournalEntry = async (req, res) => {
+  const { id } = req.params;
+  const { entryDate, description, referenceNumber, lines, userId } = req.body;
+
+  try {
+    //Get existing entry
+    const prevResult = await pool.query(
+      `SELECT * FROM "JournalEntry" WHERE id = $1`,
+      [id]
+    );
+
+    const prevEntry = prevResult.rows[0];
+
+    if (!prevEntry) {
+      return res.status(404).json({ message: "Journal entry not found" });
+    }
+
+    //Prevent editing approved/rejected
+    if (prevEntry.status === "APPROVED" || prevEntry.status === "REJECTED") {
+      return res.status(400).json({ message: "Cannot edit finalized journal entry" });
+    }
+
+    //Validate debits = credits
+    const totalDebits = lines.reduce((sum, l) => sum + (l.debit || 0), 0);
+    const totalCredits = lines.reduce((sum, l) => sum + (l.credit || 0), 0);
+
+    if (totalDebits !== totalCredits) {
+      return res.status(400).json({ message: "Debits must equal credits" });
+    }
+
+    //Update main journal entry
+    await pool.query(
+      `UPDATE "JournalEntry"
+       SET "EntryDate" = $1,
+           "Description" = $2,
+           "ReferenceNumber" = $3
+       WHERE id = $4`,
+      [entryDate, description, referenceNumber, id]
+    );
+
+    //Delete old lines
+    await pool.query(
+      `DELETE FROM "JournalEntryLine" WHERE "JournalEntryID" = $1`,
+      [id]
+    );
+
+    //Insert new lines
+    for (const line of lines) {
+      await pool.query(
+        `INSERT INTO "JournalEntryLine"
+         ("JournalEntryID", "AccountID", "Debit", "Credit")
+         VALUES ($1, $2, $3, $4)`,
+        [id, line.accountId, line.debit || 0, line.credit || 0]
+      );
+    }
+
+    //Get updated entry + lines
+    const updatedEntry = await pool.query(
+      `SELECT * FROM "JournalEntry" WHERE id = $1`,
+      [id]
+    );
+
+    const updatedLines = await pool.query(
+      `SELECT * FROM "JournalEntryLine" WHERE "JournalEntryID" = $1`,
+      [id]
+    );
+
+    //Log event
+    await logEvent(
+      "UPDATE",
+      prevEntry,
+      { journalEntry: updatedEntry.rows[0], lines: updatedLines.rows },
+      userId,
+      id
+    );
+
+    res.json({
+      message: "Journal entry updated",
+      journalEntry: updatedEntry.rows[0],
+      lines: updatedLines.rows,
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error updating journal entry" });
   }
 };

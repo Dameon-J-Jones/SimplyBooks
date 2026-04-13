@@ -1,0 +1,82 @@
+.edit-journal-page-offset {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 120px;
+  padding-bottom: 40px;
+}
+
+.edit-journal-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.edit-journal-inner {
+  width: 90%;
+  max-width: 1200px;
+  background: white;
+  border-radius: 10px;
+  padding: 24px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  margin-top: -100px;
+}
+
+.edit-journal-form {
+  width: 100%;
+}
+
+.edit-journal-top-table,
+.edit-journal-lines-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+
+.edit-journal-top-table td,
+.edit-journal-lines-table td,
+.edit-journal-lines-table th {
+  padding: 10px;
+  border: 1px solid #ddd;
+  vertical-align: middle;
+}
+
+.edit-journal-top-table input,
+.edit-journal-lines-table input,
+.edit-journal-lines-table select {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.edit-journal-lines-title {
+  margin-top: 24px;
+}
+
+.edit-journal-actions-row {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.edit-journal-totals {
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+@media (max-width: 900px) {
+  .edit-journal-page-offset {
+    padding-top: 140px;
+  }
+
+  .edit-journal-inner {
+    width: 95%;
+    padding: 16px;
+  }
+
+  .edit-journal-lines-table {
+    display: block;
+    overflow-x: auto;
+  }
+}
