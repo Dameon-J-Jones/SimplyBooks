@@ -211,8 +211,23 @@ const JournalList = () => {
   const getCreatedBy = (entry) =>
     entry?.CreatedBy || entry?.createdBy || "";
 
+  const sortLinesDebitFirst = (lines) => {
+    return [...lines].sort((a, b) => {
+      const aDebit = Number(a?.Debit || a?.debit || 0);
+      const aCredit = Number(a?.Credit || a?.credit || 0);
+      const bDebit = Number(b?.Debit || b?.debit || 0);
+      const bCredit = Number(b?.Credit || b?.credit || 0);
+
+      const aType = aDebit > 0 ? 0 : aCredit > 0 ? 1 : 2;
+      const bType = bDebit > 0 ? 0 : bCredit > 0 ? 1 : 2;
+
+      return aType - bType;
+    });
+  };
+
   const getLines = (entry) => {
-    return Array.isArray(entry?.lines) ? entry.lines : [];
+    const lines = Array.isArray(entry?.lines) ? entry.lines : [];
+    return sortLinesDebitFirst(lines);
   };
 
   const getAccountNames = (entry) => {
@@ -430,20 +445,31 @@ const JournalList = () => {
                     <td>{getReference(entry) || "N/A"}</td>
                     <td>
                     {getLines(entry).length > 0 ? (
-                        getLines(entry).map((line, index) => (
-                        <span
+                        getLines(entry).map((line, index) => {
+                        const accountId =
+                            line.AccountID ||
+                            line.account_id ||
+                            line.accountId;
+
+                        return (
+                            <span
                             key={index}
                             style={{
-                            cursor: "pointer",
-                            color: "#007bff",
-                            textDecoration: "underline",
-                            marginRight: "6px",
+                                cursor: "pointer",
+                                color: "#007bff",
+                                textDecoration: "underline",
+                                marginRight: "6px",
                             }}
-                            onClick={() => navigate(`/ledger/${line.AccountID || line.account_id}`)}
-                        >
-                            {line.account_name || "Account"}
-                        </span>
-                        ))
+                            onClick={() => {
+                                if (accountId) {
+                                navigate(`/ledger/${accountId}`);
+                                }
+                            }}
+                            >
+                            {line.account_name || line.AccountName || "Account"}
+                            </span>
+                        );
+                        })
                     ) : (
                         "N/A"
                     )}

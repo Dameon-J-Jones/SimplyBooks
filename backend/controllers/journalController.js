@@ -1,15 +1,20 @@
 import pool from "../db.js";
+import { sendEmail } from "../sendEmails.js";
 
-const logEvent = async (action, beforeData, afterData, userId) => {
+
+const logEvent = async (eventType, beforeData, afterData, userId, recordId = null) => {
   try {
     await pool.query(
-      `INSERT INTO "EventLog" (action, before_data, after_data, user_id)
-       VALUES ($1, $2, $3, $4)`,
+      `INSERT INTO "EventLog"
+       ("EventType", "OldValues", "NewValues", "PerformedBy", "RecordID", "TableName")
+       VALUES ($1, $2, $3, $4, $5, $6)`,
       [
-        action,
+        eventType,
         beforeData ? JSON.stringify(beforeData) : null,
         afterData ? JSON.stringify(afterData) : null,
         userId,
+        recordId,
+        "JournalEntry",
       ]
     );
   } catch (err) {
@@ -41,6 +46,18 @@ export const createJournalEntry = async (req, res) => {
     }
 
     await logEvent("CREATE", null, { journalEntry, lines }, createdBy);
+
+    await sendEmail({
+      to: "boomtownboss11@gmail.com", //need to do an manager or all of them
+      subject: "New Journal Entry has been created",
+      text: `Hello Manager, a new Journal entry was just created, please approve or deny on the app!`,
+      html: `
+        <h2>Account Created</h2>
+        <p>Journal entry was created.</p>
+        <a href="http://localhost:5173/journal-list">CLICK HERE TO APPORVE OR DENY USER</a>
+      `,
+    });
+
 
     res.status(201).json({ journalEntry });
   } catch (err) {

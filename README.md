@@ -17,14 +17,17 @@ React + Vite frontend for Software Application Domain project.
 4. in a new terminal (DO NOT CLOSE YOUR OLD ONE), type 'cd backend' and 'node index.js' to connect to the database
 5. Any changes made to the backend while running, you MUST ctrl+c in the terminal and run the commands in step 4 again
 
-### Logins for Testing
-(Accountant)
-Uname:taccountant0426
-Password: Pass1234!
+
 
 #### SIMPLYBOOKS EMAIL 
 email: simplybooks361@gmail.com
 password: SimplyBooks123!
+
+
+### Logins for Testing
+(Accountant)
+Uname:taccountant0426
+Password: Pass1234!
 
 (Manager)
 Uname: mtest0426
