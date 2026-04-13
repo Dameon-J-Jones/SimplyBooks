@@ -38,8 +38,10 @@ Password: Pass1234!
 email: admin@email.com
 firstname: adminFname
 Last name: adminLname
+
 Username: aadminlname0326
 Password: Pass1234!
+
 street: admin st
 city: admin city
 state: admin state

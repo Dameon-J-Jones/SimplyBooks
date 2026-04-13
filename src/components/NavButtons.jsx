@@ -29,6 +29,10 @@ export default function NavButtons(){
       <button onClick={() => navigate("/UserList")}>
         Users
       </button>
+
+      <button onClick={() => navigate("/journal/edit")}>
+        Journal Edit
+      </button>
       
       
       

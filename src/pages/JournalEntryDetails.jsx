@@ -56,7 +56,12 @@ const JournalEntryDetails = () => {
       setLoading(true);
       setError("");
 
-      const response = await axios.get(`/journal/${id}`);
+      const response = await axios.get(`/journal/${id}`, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+
       setEntry(response.data.journalEntry || null);
       setLines(Array.isArray(response.data.lines) ? response.data.lines : []);
     } catch (err) {
@@ -98,7 +103,25 @@ const JournalEntryDetails = () => {
       <NavButtons />
 
       <div className="coa-container">
-        <h1>Journal Entry Details</h1>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            gap: "12px",
+            flexWrap: "wrap",
+            marginBottom: "20px",
+          }}
+        >
+          <h1>Journal Entry Details</h1>
+
+          <button
+            type="button"
+            onClick={() => navigate(`/journal/edit/${id}`)}
+          >
+            Edit Journal
+          </button>
+        </div>
 
         {loading && <p>Loading...</p>}
         {error && <p className="error-text">{error}</p>}

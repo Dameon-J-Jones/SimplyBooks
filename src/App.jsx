@@ -17,6 +17,7 @@ import EditUserInfo from "./pages/EditUserInfo";
 import EventLog from "./pages/EventLog";
 import JournalList from "./pages/JournalList";
 import JournalEntryDetails from "./pages/JournalEntryDetails";
+import EditJournalEntry from "./pages/EditJournalPage";
 
 
 export default function App() {
@@ -43,7 +44,9 @@ export default function App() {
         <Route path="/journal-list" element={<JournalList />} />
         <Route path="/EditUser" element={<EditUserInfo />} />
         <Route path="/journal/:id" element={<JournalEntryDetails />} />
+        <Route path="/journal/edit/:id" element={<EditJournalEntry />} />
 
+       
 
         {/* catch-all */}
         <Route path="*" element={<h1 style={{ color: "black" }}>404 Not Found</h1>} />
