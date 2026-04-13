@@ -1,11 +1,32 @@
 .ledger-container {
+  margin-top: 5px;
   padding: 30px;
+}
+
+.ledger-container button{
+  margin-bottom: 20px;
+ 
 }
 
 .ledger-card {
   background: white;
   padding: 20px;
   border-radius: 8px;
+}
+.ledger-card {
+  margin-bottom: 20px;
+}
+.pr-link-button {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #007bff;
+  text-decoration: underline;
+  cursor: pointer;
+  font: inherit;
+}
+.ledger-card p {
+  margin: 10px 0;
 }
 
 .error-text {

@@ -9,6 +9,7 @@ import accountRoutes from "./routes/accountRoutes.js";
 import journalRoutes from "./routes/journalRoutes.js";
 import editUserRoutes from "./routes/editUserRoutes.js";
 import reportRoutes from "./routes/reportRoutes.js";
+import notificationRoutes from "./routes/notificationRoutes.js";
 
 const app = express();
 app.use(express.json());
@@ -29,6 +30,7 @@ app.use("/account", accountRoutes);
 app.use("/journal", journalRoutes);
 app.use("/edit-user", editUserRoutes);
 app.use("/reports", reportRoutes);
+app.use("/notifications", notificationRoutes);
 
 
 app.get("/test", (req, res) => {

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import Logo from "../components/Logo";
 import "./Login.css";
 import LongLogo from "../components/LongLogo";
@@ -21,42 +21,59 @@ const Login = () => {
 
   const [isPopupOpen, setPopupOpen] = useState (false);
 
+  useEffect(() => {
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
+
+  const roleRoutes = {
+    0: "/AccountantHome",
+    1: "/ManagerHome",
+    2: "/AdminHome"
+  };
+
+  if (token && role !== null) {
+    navigate(roleRoutes[Number(role)] || "/", { replace: true });
+  }
+}, [navigate]);
+
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
   try {
     const response = await api.post("/auth", {
       username,
       password
     });
-    
-    setCurrentUser(response.data.user);
 
     const { user, token } = response.data;
 
-    console.log(response.data)
+    if (!token) {
+      alert("Login failed");
+      return;
+    }
 
-    //keep signed in after refresh
-    if (token) localStorage.setItem("token", token);
-
-    //app-wide auth state
+    localStorage.setItem("token", token);
+    localStorage.setItem("role", user.role);
     setAuth({ user, token });
-   console.log(localStorage.getItem("token"))
+    setCurrentUser(user);
 
-    // go to home based on role
     const roleRoutes = {
       0: "/AccountantHome",
       1: "/ManagerHome",
       2: "/AdminHome"
     };
 
-    navigate(roleRoutes[user.role] || "/");
-
+    
+    if(user.status === 1) {navigate(roleRoutes[user.role] || "/");}
+    else{
+       alert("Status is inactive. Please wait for approval from admin.");
+      return;
+    }
   } catch (err) {
     console.error(err);
-  alert(err.response?.data?.message || "Login failed");
+    alert(err.response?.data?.message || "Login failed");
   }
-  }
+};
 
 
   return (

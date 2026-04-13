@@ -1,0 +1,23 @@
+.topnav {
+  width: 100%;
+  padding: 12px 20px;
+  margin-top: 10px;
+
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+    justify-content: center;
+  position: sticky;
+  
+}
+
+.topnav button {
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 20px;
+  margin-top: 10px;
+}
+

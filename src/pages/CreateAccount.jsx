@@ -6,6 +6,7 @@ import api from "../api/axios";
 import { makeUsername } from "../utils/MakeUsername";
 import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip } from "react-tooltip";
+import NavButtons from "../components/NavButtons";
 
 export default function CreateAccount() {
 
@@ -69,8 +70,8 @@ async function handleSubmit(e) {
     const response = await api.post("/users", payload);
     console.log("User created:", response.data);
 
-    setMessage("Account created successfully!");
-    setTimeout(() => navigate("/login"), 2000);
+    setMessage("Account created successfully! Please wait for Admin to approve!");
+    setTimeout(() => navigate("/login"), 5000);
   } catch (err) {
     console.error("Error creating account:", err.response?.data || err);
     alert(err.response?.data?.message || "Server error");
@@ -117,6 +118,8 @@ async function handleSubmit(e) {
         </div>  
       )
       }
+
+      
         <div className="buttons-container">
           <h1>Create New User</h1>
             {message && <div className="success-message">{message}</div>}

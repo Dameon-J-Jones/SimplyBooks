@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip } from "react-tooltip";
+import axios from "axios";
 
 function checkPassword(password) {
   const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).+$/;
@@ -21,12 +22,13 @@ function checkPassword(password) {
 export default function PasswordReset() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [userId, setUserId] = useState("");
   const [error, setError] = useState("");
   const [isPopupOpen, setPopupOpen] = useState (false);
 
   const navigate = useNavigate();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!password || !confirmPassword) {
       setError("Please fill out both password fields.");
       return;
@@ -40,6 +42,7 @@ export default function PasswordReset() {
     if (!checkPassword(password)) {
       return;
     }
+
 
     setError("");
     alert("Password successfully reset!");

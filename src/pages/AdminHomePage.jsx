@@ -10,6 +10,8 @@ import {useUser} from "../components/UserContext";
 import styles from "./HomePage.module.css";
 import axios from "../api/axios";
 import api from "../api/axios";
+import Logout from "../components/Logout";
+import NavButtons from "../components/NavButtons"
 
 
 
@@ -102,7 +104,7 @@ return (
           >Charts</button>
         </Link>
       </div>
- 
+      <NavButtons/>
 
    <div className="body">
     <h1>Admin</h1>
@@ -128,6 +130,7 @@ return (
           >Chart of Accounts</button>
       </Link>
 <button className="help-button" onClick={() => setPopupOpen(true)}>Help </button>
+    <Logout/>
     </div>
   </div>
 );

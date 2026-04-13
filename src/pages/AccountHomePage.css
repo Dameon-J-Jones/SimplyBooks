@@ -13,6 +13,17 @@
    
 }
 
+.journal-action-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.journal-action-cell input {
+  width: 100%;
+  min-width: 140px;
+}
+
 .date {
   margin: 0;
   margin-left: 10px;

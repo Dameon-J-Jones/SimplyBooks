@@ -1,225 +1,310 @@
 import LongLogo from "../components/LongLogo";
 import "./CreateJournal.css";
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../api/axios";
-import { makeUsername } from "../utils/MakeUsername";
-import 'react-tooltip/dist/react-tooltip.css';
+import axios from "../api/axios";
+import "react-tooltip/dist/react-tooltip.css";
 import { Tooltip } from "react-tooltip";
+import NavButtons from "../components/NavButtons";
 
 export default function CreateJournalEntry() {
+  const navigate = useNavigate();
 
-  const userRef =useRef();
-  const errRef = useRef();
-  
-   const [userFocus, setUserFocus] = useState(false) 
-   const [message, setMessage] = useState("");
-   const [errorMessage, setErrorMessage] = useState("");
-   const navigate = useNavigate();
-   const [isPopupOpen, setPopupOpen] = useState (false);
+  const [accounts, setAccounts] = useState([]);
+  const [message, setMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isPopupOpen, setPopupOpen] = useState(false);
 
-     const today = new Date();
-  const formatted = today.toLocaleDateString();
+  const [data, setData] = useState({});
+  const [isAuthorized, setIsAuthorized] = useState(false);
+
+  const token = localStorage.getItem("token");
 
   const [formData, setFormData] = useState({
-    debACCT: "Cash",
-    credACCT: "ACCT Recievable",
     description: "",
     debit: "",
+    credit: "",
   });
-  const [acctVal, setACCTVal] = useState('');
-  let accts = [
-    {label:"one", value:"one"},
-    {label:"two", value:"two"}
-    ];
-  const [acctPick, setACCTPick] = useState('');
-  const [acctPick2, setACCTPick2] = useState('');  
-  const handleACCTChange = (e) => {
-    setACCTPick(e.target.value);
+
+  const [debitAccount, setDebitAccount] = useState("");
+  const [creditAccount, setCreditAccount] = useState("");
+
+  const today = new Date();
+  const formatted = today.toLocaleDateString();
+
+  async function verifyToken() {
+    if (!token) {
+      navigate("/login");
+      return false;
+    }
+
+    try {
+      const response = await axios.get("/admin/all-access", {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+
+      const userData = response.data;
+      setData(userData);
+      setIsAuthorized(true);
+      return true;
+    } catch (error) {
+      console.log("Invalid token " + error);
+      navigate("/login");
+      return false;
+    }
   }
-    const handleACCTChange2 = (e) => {
-    setACCTPick2(e.target.value);
-  }
- //checks password to see if it meets rules 
 
+  const fetchAccounts = async () => {
+    try {
+      const res = await axios.get("/account", {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
 
+      setAccounts(Array.isArray(res.data) ? res.data : []);
+    } catch (err) {
+      console.error("Error loading accounts:", err);
+      setErrorMessage("Could not load accounts.");
+    }
+  };
 
-async function handleSubmit(e) {
-  e.preventDefault();
+  useEffect(() => {
+    const initPage = async () => {
+      const ok = await verifyToken();
+      if (ok) {
+        await fetchAccounts();
+      }
+    };
 
-
-  try {
-    //Status of submitted journal entries is "p" for pending.
-    const status = "p";
-
-    // ensure all required fields are non-empty
-    const payload = { ...formData, username };
-    console.log("Sending payload:", payload); //debug line
-
-    const response = await api.post("/users", payload);
-    console.log("User created:", response.data);
-
-    setMessage("Journal Entry Submitted!");
-    setTimeout(() => navigate("/login"), 2000);
-  } catch (err) {
-    console.error("Error submitting Journal:", err.response?.data || err);
-    alert(err.response?.data?.message || "Server error");
-  }
-}
+    initPage();
+  }, []);
 
   function handleChange(e) {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  }
+
+  function handleReset() {
     setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
+      description: "",
+      debit: "",
+      credit: "",
     });
+    setDebitAccount("");
+    setCreditAccount("");
+    setErrorMessage("");
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    setErrorMessage("");
+    setMessage("");
+
+    if (!debitAccount || !creditAccount) {
+      setErrorMessage("Please select both debit and credit accounts.");
+      return;
+    }
+
+    if (!formData.debit || !formData.credit) {
+      setErrorMessage("Enter debit and credit amounts.");
+      return;
+    }
+
+    if (Number(formData.debit) <= 0 || Number(formData.credit) <= 0) {
+      setErrorMessage("Debit and credit amounts must be greater than 0.");
+      return;
+    }
+
+    if (Number(formData.debit) !== Number(formData.credit)) {
+      setErrorMessage("Debit and Credit must match.");
+      return;
+    }
+
+    if (!formData.description.trim()) {
+      setErrorMessage("Description is required.");
+      return;
+    }
+
+    if (!data?.user) {
+      setErrorMessage("User not found. Please log in again.");
+      return;
+    }
+
+    try {
+      const payload = {
+        entryDate: new Date().toISOString(),
+        description: formData.description.trim(),
+        referenceNumber: "REF-" + Date.now(),
+        createdBy: data.user,
+        lines: [
+          {
+            accountId: Number(debitAccount),
+            debit: Number(formData.debit),
+            credit: 0,
+          },
+          {
+            accountId: Number(creditAccount),
+            debit: 0,
+            credit: Number(formData.credit),
+          },
+        ],
+      };
+
+      await axios.post("/journal/create", payload, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+
+      handleReset();
+      setMessage("Journal Entry Submitted!");
+    } catch (err) {
+      console.error("FULL ERROR:", err.response?.data || err);
+      setErrorMessage(
+        err.response?.data?.message || "Failed to submit journal entry."
+      );
+    }
   }
 
   return (
     <>
-      <div className="logo"><LongLogo /></div>
-      <Tooltip id="tooltipA"/>
+      <div className="logo">
+        <LongLogo />
+      </div>
+
+      <Tooltip id="tooltipA" />
+      <NavButtons />
+
       <div className="create-account-container">
-        {/*Popup  Template*/}
-      {isPopupOpen &&
-      (      
-        <div className="PopDiv">
-          <p>
-            This is the page to create an individual Journal Entry
-          </p>
-          <p>
-            When entering Debits and credits, make sure that each is in the correct column.
-          </p>
-          <button onClick={() => setPopupOpen(false)}>Close</button>
-        </div>  
-      )
-      }
+        {isPopupOpen && (
+          <div className="PopDiv">
+            <p>Create a journal entry using valid accounts.</p>
+            <button onClick={() => setPopupOpen(false)}>Close</button>
+          </div>
+        )}
+
         <div className="buttons-container">
           <h1>Add New Journal Entry</h1>
-            {message && <div className="success-message">{message}</div>}
-            { errorMessage && <div className="error-message">{errorMessage}</div>}
-          <form className="create-form" onSubmit={handleSubmit}>
-            <table>
-            {/*Row one, Main Header*/}
-            <tr>
-                <td>Journal</td>
-                <td>Page</td>
-            </tr>
-            {/*Row Two, Column Headers*/}
-            <tr>
-                <td className="tDate"><text>Date</text></td>
-                <td className="tACCT"><text>Account</text></td>
-                <td className="Blank"></td>
-                <td className="tDebit"><text>Debits</text></td>
-                <td className="tCredit"><text>Credits</text></td>
-            </tr>
-            {/*Row Three, Debit Line*/}
-            <tr>
-                <td><text>{formatted}</text></td>
-                <td>
-                <select
-                name="debACCT"
-                data-tooltip-id="tooltipA"
-                data-tooltip-content="Choose an Account to Debit"
-                data-tooltip-place="top"
-                value={acctVal}
-                onChange={handleACCTChange}
-                required
-                >
-                    <option value="SelectAccount">Select Account</option>
-                    {
-                        accts.map((acctPick) => (
-                            <option value={acctPick.value}>{acctPick.label}</option>
+
+          {message && <div className="success-message">{message}</div>}
+          {errorMessage && <div className="error-message">{errorMessage}</div>}
+
+          {isAuthorized && (
+            <form className="create-form" onSubmit={handleSubmit}>
+              <table>
+                <tbody>
+                  <tr>
+                    <td>Date</td>
+                    <td>{formatted}</td>
+                  </tr>
+
+                  <tr>
+                    <td>Debit Account</td>
+                    <td>
+                      <select
+                        value={debitAccount}
+                        onChange={(e) => setDebitAccount(e.target.value)}
+                        required
+                      >
+                        <option value="">Select Account</option>
+                        {accounts.map((acc) => (
+                          <option
+                            key={acc.id || acc.account_id}
+                            value={acc.id || acc.account_id}
+                          >
+                            {acc.account_number
+                              ? `${acc.account_number} - ${acc.account_name}`
+                              : acc.account_name}
+                          </option>
                         ))}
-                </select>
-                </td>
-                <td>
+                      </select>
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        name="debit"
+                        value={formData.debit}
+                        onChange={handleChange}
+                        placeholder="Debit"
+                        required
+                      />
+                    </td>
+                  </tr>
 
-                    
-                </td>
-                <td>
-                    <input
-                    type="text"
-                    id="debit"
-                    name="debit"
-                    value={formData.firstName}
-                    onChange={handleChange}
-                    placeholder="Debit" required
-                    />
-                </td>
-                <td><text></text></td>
-            </tr>
-
-            <tr>
-                <td><text></text></td>
-                <td>
-                <select
-                name="credACCT"
-                data-tooltip-id="tooltipA"
-                data-tooltip-content="Choose The User Type For Your Account"
-                data-tooltip-place="top"
-                value={acctVal}
-                onChange={handleACCTChange2}
-                required
-                >
-                    <option value="SelectAccount">Select Account</option>
-                    {
-                        accts.map((acctPick) => (
-                            <option value={acctPick.value}>{acctPick.label}</option>
+                  <tr>
+                    <td>Credit Account</td>
+                    <td>
+                      <select
+                        value={creditAccount}
+                        onChange={(e) => setCreditAccount(e.target.value)}
+                        required
+                      >
+                        <option value="">Select Account</option>
+                        {accounts.map((acc) => (
+                          <option
+                            key={acc.id || acc.account_id}
+                            value={acc.id || acc.account_id}
+                          >
+                            {acc.account_number
+                              ? `${acc.account_number} - ${acc.account_name}`
+                              : acc.account_name}
+                          </option>
                         ))}
-                </select>
-                </td>
-                <td>
+                      </select>
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        name="credit"
+                        value={formData.credit}
+                        onChange={handleChange}
+                        placeholder="Credit"
+                        required
+                      />
+                    </td>
+                  </tr>
 
-                    
-                </td>
-                <td><text></text></td>
-                <td>
-                    <input
-                    type="text"
-                    id="credit"
-                    name="credit"
-                    value={formData.firstName}
-                    onChange={handleChange}
-                    placeholder="credit" required
-                    />
-                </td>
-                
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-            <input
-              type="text"
-              id="description"
-              name="description"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Description of Service"
-              required
-            />
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            </table>
+                  <tr>
+                    <td>Description</td>
+                    <td colSpan="2">
+                      <input
+                        type="text"
+                        name="description"
+                        value={formData.description}
+                        onChange={handleChange}
+                        placeholder="Description"
+                        required
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
 
+              <button type="button" onClick={handleReset}>
+                Reset
+              </button>
 
+              <button type="submit" className="submit-button">
+                Submit Journal Entry
+              </button>
+            </form>
+          )}
 
+          <br />
 
-
-
-
-            {/* submit */}
-            <button type="submit" className="submit-button"
-            data-tooltip-id="tooltipA"
-            data-tooltip-content="Submit Journal Entry"
-            data-tooltip-place="top"
-            >
-              Submit Journal Entry
-            </button>
-          </form>
-          <button onClick={() => setPopupOpen(true)}>Help </button>
+          <button onClick={() => setPopupOpen(true)}>Help</button>
         </div>
       </div>
     </>

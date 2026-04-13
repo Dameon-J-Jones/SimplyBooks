@@ -8,6 +8,8 @@ import "./AccountHomePage.css";
 import AccountInfo from "../components/AccountInfo";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Logout from "../components/Logout";
+import NavButtons from "../components/NavButtons";
 
 const AccountantHomePage = () => {
 const [isPopupOpen, setPopupOpen] = useState (false);
@@ -31,9 +33,9 @@ async function verifyToken() {
         }
       }
     );
-
+  
     setData(response.data);
-    
+     
 
   } catch (error) {
     console.log(error);
@@ -42,7 +44,7 @@ async function verifyToken() {
 }
 
 useEffect(() => {
-  //verifyToken();
+  verifyToken();
 }, []);
 
 
@@ -83,6 +85,7 @@ const username = data.username || "username";
         </Link>
       </div>
 
+    <NavButtons/>
 
 
 
@@ -116,6 +119,7 @@ const username = data.username || "username";
       </Link>
      
 <button className="help-button" onClick={() => setPopupOpen(true)}>Help </button>
+<Logout/>
     </div>
 </div>
   );
