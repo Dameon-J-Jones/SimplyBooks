@@ -19,6 +19,7 @@ const Ledger = () => {
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [isPopupOpen, setPopupOpen] = useState (false);
 
   const token = localStorage.getItem("token");
 
@@ -342,6 +343,25 @@ const Ledger = () => {
             </table>
           </>
         )}
+    <button
+      onClick={() => setPopupOpen(true)}
+      data-tooltip-id="tooltipA"
+      data-tooltip-content="Help"
+      data-tooltip-place="top"
+    >
+    Help
+    </button>
+              {/*Popup  Template*/}
+      {isPopupOpen &&
+      (      
+        <div className="PopDiv">
+          <p>
+          This page displays information on an account's Ledger. Details such as debits, credits, and balance are listed.
+          </p> 
+          <button onClick={() => setPopupOpen(false)}>Close</button>
+        </div>  
+      )
+      }
       </div>
     </div>
   );

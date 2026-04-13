@@ -26,16 +26,14 @@ const logEvent = async (eventType, beforeData, afterData, userId, recordId = nul
 export const createJournalEntry = async (req, res) => {
   const { entryDate, description, referenceNumber, createdBy, lines } = req.body;
 
-  const client = await pool.connect();
-
   try {
     await client.query("BEGIN");
 
     const journalResult = await client.query(
       `INSERT INTO "JournalEntry"
-       ("EntryDate", "Description", "ReferenceNumber", "CreatedBy", status, "CreatedAt")
-       VALUES ($1, $2, $3, $4, 'PENDING', NOW())
-       RETURNING id`,
+       ("EntryDate", "Description", "ReferenceNumber", "CreatedAt", "CreatedBy", status, type)
+       VALUES ($1, $2, $3, NOW(), $4, 'PENDING', 'GENERAL')
+       RETURNING *`,
       [entryDate, description, referenceNumber, createdBy]
     );
 
@@ -202,7 +200,7 @@ export const getJournalEntries = async (req, res) => {
   //for filtering by 'normal' or 'adjusting'
   if (type) {
     params.push(type);
-    query += `AND type=$${params.length}`;
+    query += ` AND type=$${params.length}`;
   }
 
   try {
@@ -267,7 +265,6 @@ export const getLedgerByAccountId = async (req, res) => {
 };
 
 //upload file attachment to JournalEntry
-//TODO: update db to add attachment field to journalentry
 export const uploadFile = async (req, res) => {
     try {
         const { id } = req.params;
