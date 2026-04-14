@@ -99,7 +99,14 @@ return (<>
 <div className="navbuttons"><NavButtons/></div>
 <div className="user-table-container">
   <Tooltip id="tooltipA" />
-      
+          <button
+      onClick={() => setPopupOpen(true)}
+      data-tooltip-id="tooltipA"
+      data-tooltip-content="Help"
+      data-tooltip-place="top"
+    >
+    Help
+    </button>
       
   <table className="user-table">
     <thead>
@@ -155,14 +162,7 @@ return (<>
   </table>
  
 </div> 
-    <button
-      onClick={() => setPopupOpen(true)}
-      data-tooltip-id="tooltipA"
-      data-tooltip-content="Help"
-      data-tooltip-place="top"
-    >
-    Help
-    </button>
+
               {/*Popup  Template*/}
       {isPopupOpen &&
       (      
