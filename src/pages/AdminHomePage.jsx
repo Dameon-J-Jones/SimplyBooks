@@ -110,6 +110,10 @@ return (
 
    <div className="body">
     <h1>Admin</h1>
+    <RatioDashboard />
+    <div className={styles.Notifcation}>
+      <JournalNotification />
+    </div>
 <div className={styles.Notifcation}>
   <JournalNotification />
 </div>
