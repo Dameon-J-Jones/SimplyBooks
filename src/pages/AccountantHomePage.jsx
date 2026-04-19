@@ -104,6 +104,10 @@ const username = data.username || "username";
       }
 <div className="body">
       <h1>Accountant</h1>
+      <RatioDashboard />
+      <div className={styles.Notifcation}>
+        <JournalNotification />
+      </div>
       <Link to="/UserList">
           <button type="button" className="create-user-button"
           data-tooltip-id="tooltipA"
