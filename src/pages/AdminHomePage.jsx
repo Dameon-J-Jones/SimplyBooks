@@ -13,6 +13,7 @@ import api from "../api/axios";
 import Logout from "../components/Logout";
 import NavButtons from "../components/NavButtons"
 import JournalNotification from "../components/JournalNotification";
+import RatioDashboard from "../components/RatioDashboard";
 
 
 const AdminHomePage = () => {
