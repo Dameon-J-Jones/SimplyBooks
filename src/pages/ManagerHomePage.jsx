@@ -10,6 +10,7 @@ import Logout from "../components/Logout";
 import axios from "../api/axios";
 import NavButtons from "../components/NavButtons";
 import JournalNotification from "../components/JournalNotification";
+import RatioDashboard from "../components/RatioDashboard";
 
 
 const ManagerHomePage = () => {
