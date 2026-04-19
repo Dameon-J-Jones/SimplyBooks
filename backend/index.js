@@ -10,6 +10,7 @@ import journalRoutes from "./routes/journalRoutes.js";
 import editUserRoutes from "./routes/editUserRoutes.js";
 import reportRoutes from "./routes/reportRoutes.js";
 import notificationRoutes from "./routes/notificationRoutes.js";
+import dashboardRoutes from "./routes/dashboardRoutes.js";
 
 const app = express();
 app.use(express.json());
@@ -31,6 +32,7 @@ app.use("/journal", journalRoutes);
 app.use("/edit-user", editUserRoutes);
 app.use("/reports", reportRoutes);
 app.use("/notifications", notificationRoutes);
+app.use("/dashboard", dashboardRoutes);
 
 
 app.get("/test", (req, res) => {
