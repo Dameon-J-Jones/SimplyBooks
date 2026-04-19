@@ -10,6 +10,7 @@ import Logout from "../components/Logout";
 import axios from "../api/axios";
 import NavButtons from "../components/NavButtons";
 import JournalNotification from "../components/JournalNotification";
+import RatioDashboard from "../components/RatioDashboard";
 
 
 const ManagerHomePage = () => {
@@ -97,6 +98,10 @@ const username = data.username || "username";
 <div className="body">
   
   <h1>Manager</h1>
+  <RatioDashboard />
+  <div className={styles.Notifcation}>
+    <JournalNotification />
+  </div>
 
   <div className={styles.Notifcation}>
     <JournalNotification />

@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Logout from "../components/Logout";
 import NavButtons from "../components/NavButtons";
+import RatioDashboard from "../components/RatioDashboard";
 
 const AccountantHomePage = () => {
 const [isPopupOpen, setPopupOpen] = useState (false);
@@ -103,6 +104,10 @@ const username = data.username || "username";
       }
 <div className="body">
       <h1>Accountant</h1>
+      <RatioDashboard />
+      <div className={styles.Notifcation}>
+        <JournalNotification />
+      </div>
       <Link to="/UserList">
           <button type="button" className="create-user-button"
           data-tooltip-id="tooltipA"

@@ -1,0 +1,88 @@
+.ratio-dashboard {
+  width: 100%;
+  max-width: 1100px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #ffffff;
+  border: 1px solid #dcdcdc;
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+
+.ratio-dashboard-header {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.ratio-dashboard-header h2 {
+  margin-bottom: 8px;
+}
+
+.ratio-dashboard-header p {
+  margin: 0;
+  color: #555;
+}
+
+.ratio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.ratio-card {
+  border-radius: 12px;
+  padding: 18px;
+  border: 2px solid #ccc;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.ratio-card h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.ratio-value {
+  font-size: 28px;
+  font-weight: bold;
+  margin: 0 0 10px 0;
+}
+
+.ratio-description {
+  margin: 0;
+  line-height: 1.4;
+}
+
+.ratio-green {
+  background-color: #eaf7ea;
+  border-color: #2e7d32;
+}
+
+.ratio-yellow {
+  background-color: #fff8db;
+  border-color: #c59d00;
+}
+
+.ratio-red {
+  background-color: #fdecec;
+  border-color: #c62828;
+}
+
+.net-income-card {
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #dcdcdc;
+  background: #f8f8f8;
+  text-align: center;
+}
+
+.net-income-card h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.net-income-card p {
+  margin: 0;
+  font-size: 26px;
+  font-weight: bold;
+}
