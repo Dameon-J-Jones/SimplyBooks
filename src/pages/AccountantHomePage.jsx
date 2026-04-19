@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Logout from "../components/Logout";
 import NavButtons from "../components/NavButtons";
+import RatioDashboard from "../components/RatioDashboard";
 
 const AccountantHomePage = () => {
 const [isPopupOpen, setPopupOpen] = useState (false);
