@@ -98,6 +98,10 @@ const username = data.username || "username";
 <div className="body">
   
   <h1>Manager</h1>
+  <RatioDashboard />
+  <div className={styles.Notifcation}>
+    <JournalNotification />
+  </div>
 
   <div className={styles.Notifcation}>
     <JournalNotification />
