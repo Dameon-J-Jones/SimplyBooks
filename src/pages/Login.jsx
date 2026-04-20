@@ -1,165 +1,161 @@
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import Logo from "../components/Logo";
 import "./Login.css";
-import LongLogo from "../components/LongLogo";
 import Authcontext from "../components/AuthProvider";
 import api from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../components/UserContext";
-import 'react-tooltip/dist/react-tooltip.css';
+import "react-tooltip/dist/react-tooltip.css";
 import { Tooltip } from "react-tooltip";
 
-
 const Login = () => {
-
   const navigate = useNavigate();
-  const {setAuth} = useContext(Authcontext)
-  const {setCurrentUser} = useUser();
+  const { setAuth } = useContext(Authcontext);
+  const { setCurrentUser } = useUser();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  const [isPopupOpen, setPopupOpen] = useState (false);
+  const [isPopupOpen, setPopupOpen] = useState(false);
 
   useEffect(() => {
-  const token = localStorage.getItem("token");
-  const role = localStorage.getItem("role");
-
-  const roleRoutes = {
-    0: "/AccountantHome",
-    1: "/ManagerHome",
-    2: "/AdminHome"
-  };
-
-  if (token && role !== null) {
-    navigate(roleRoutes[Number(role)] || "/", { replace: true });
-  }
-}, [navigate]);
-
-  const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  try {
-    const response = await api.post("/auth", {
-      username,
-      password
-    });
-
-    const { user, token } = response.data;
-
-    if (!token) {
-      alert("Login failed");
-      return;
-    }
-
-    localStorage.setItem("token", token);
-    localStorage.setItem("role", user.role);
-    setAuth({ user, token });
-    setCurrentUser(user);
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
 
     const roleRoutes = {
       0: "/AccountantHome",
       1: "/ManagerHome",
-      2: "/AdminHome"
+      2: "/AdminHome",
     };
 
-    
-    if(user.status === 1) {navigate(roleRoutes[user.role] || "/");}
-    else{
-       alert("Status is inactive. Please wait for approval from admin.");
-      return;
+    if (token && role !== null) {
+      navigate(roleRoutes[Number(role)] || "/");
     }
-  } catch (err) {
-    console.error(err);
-    alert(err.response?.data?.message || "Login failed");
-  }
-};
+  }, [navigate]);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await api.post("/auth", {
+        username,
+        password,
+      });
+
+      const { user, token } = response.data;
+
+      if (!token) {
+        alert("Login failed");
+        return;
+      }
+
+      if (user.status !== 1) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+        alert("Status is inactive. Please wait for approval from admin.");
+        return;
+      }
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("role", user.role);
+      setAuth({ user, token });
+      setCurrentUser(user);
+
+      const roleRoutes = {
+        0: "/AccountantHome",
+        1: "/ManagerHome",
+        2: "/AdminHome",
+      };
+
+      navigate(roleRoutes[user.role] || "/");
+    } catch (err) {
+      console.error(err);
+      alert(err.response?.data?.message || "Login failed");
+    }
+  };
 
   return (
     <div className="page-margin">
       <div className="top-bar">
-        <div className="logo"><Logo/></div>
+        <div className="logo"><Logo /></div>
         <text className="icon" id="initials"></text>
       </div>
-      
-    <div className="login-page">
-      <Tooltip id="tooltipA"/>
-      <form onSubmit={handleSubmit} className="login-form">
-     
-       {/* Username */}
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
 
-        {/* Password */}
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+      <div className="login-page">
+        <Tooltip id="tooltipA" />
 
-        {/* Submit */}
-        <button type="submit"
-          data-tooltip-id="tooltipA"
-          data-tooltip-content="Login"
-          data-tooltip-place="top"
-        >Login</button>
+        <form onSubmit={handleSubmit} className="login-form">
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
 
-        {/* Extra actions */}
-       
-      </form>
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
 
-      {/*Popup  Template*/}
-      {isPopupOpen &&
-      (
-      <div className="PopDiv">
-        <p>
-          This screen allows the user to login by entering their
-           username and password, then clicking the Login Button.
-           If you've forgotten your password, click the "Forgot Password Button"
-        </p> 
-        <p>
-          This screen also allows for a user to create an account by clicking
-          the "create account" button
-        </p>
-        <button onClick={() => setPopupOpen(false)}>Close </button>
-      </div>  
-      )
-      }
-      <Link to="/forgot-password" >
-          <button type="button" className="forgot-password-button" id="Forgot"
-          data-tooltip-id="tooltipA"
-          data-tooltip-content="Forgot Password"
-          data-tooltip-place="top"
+          <button
+            type="submit"
+            data-tooltip-id="tooltipA"
+            data-tooltip-content="Login"
+            data-tooltip-place="top"
+          >
+            Login
+          </button>
+        </form>
+
+        {isPopupOpen && (
+          <div className="PopDiv">
+            <p>
+              This screen allows the user to login by entering their
+              username and password, then clicking the Login Button.
+              If you've forgotten your password, click the "Forgot Password Button"
+            </p>
+            <p>
+              This screen also allows for a user to create an account by clicking
+              the "create account" button
+            </p>
+            <button onClick={() => setPopupOpen(false)}>Close</button>
+          </div>
+        )}
+
+        <Link to="/forgot-password">
+          <button
+            type="button"
+            className="forgot-password-button"
+            id="Forgot"
+            data-tooltip-id="tooltipA"
+            data-tooltip-content="Forgot Password"
+            data-tooltip-place="top"
           >
             Forgot Password
           </button>
-      </Link>
+        </Link>
 
-     
-
-      <Link to="/create-account"
+        <Link
+          to="/create-account"
           data-tooltip-id="tooltipA"
           data-tooltip-content="Create Account"
           data-tooltip-place="top"
-      >
-          <button type="button" className="create-user-button">Create New User</button>
-      </Link> 
-      <br/>
+        >
+          <button type="button" className="create-user-button">
+            Create New User
+          </button>
+        </Link>
 
-      <button onClick={() => setPopupOpen(true)}>Help </button>
-      
+        <br />
 
-
-    </div>
+        <button onClick={() => setPopupOpen(true)}>Help</button>
+      </div>
     </div>
   );
 };
+
 export default Login;

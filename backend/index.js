@@ -11,7 +11,7 @@ import editUserRoutes from "./routes/editUserRoutes.js";
 import reportRoutes from "./routes/reportRoutes.js";
 import notificationRoutes from "./routes/notificationRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
-
+ 
 const app = express();
 app.use(express.json());
 

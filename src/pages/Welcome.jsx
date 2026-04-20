@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import LongLogo from "../components/longLogo";
+import LongLogo from "../components/LongLogo";
 import "./Welcome.css";
 import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip } from "react-tooltip";
