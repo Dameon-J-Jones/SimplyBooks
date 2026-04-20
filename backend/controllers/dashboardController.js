@@ -19,10 +19,10 @@ export const getDashboardRatios = async (req, res) => {
     };
 
     const assets = getTotal("Asset");
-    const liabilities = getTotal("Liability");
+    const liabilities = getTotal("Liability") * -1;
     const equity = getTotal("Equity");
     const revenue = getTotal("Revenue");
-    const expenses = getTotal("Expense");
+    const expenses = getTotal("Expense") * -1;
 
     const netIncome = revenue - expenses;
 
