@@ -30,7 +30,7 @@ const AdminHomePage = () => {
     }
 
     try {
-      const response = await axios.get("http://localhost:3001/admin/admin-access", {
+      const response = await axios.get("/admin/admin-access", {
         headers: {
           authorization: `Bearer ${token}`,
         },
@@ -48,7 +48,7 @@ const AdminHomePage = () => {
       setRatioLoading(true);
       setRatioError("");
 
-      const response = await axios.get("http://localhost:3001/dashboard", {
+      const response = await axios.get("/dashboard", {
         headers: {
           authorization: `Bearer ${token}`,
         },

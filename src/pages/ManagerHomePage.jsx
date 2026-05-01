@@ -27,7 +27,7 @@ const ManagerHomePage = () => {
     }
 
     try {
-      const response = await axios.get("http://localhost:3001/admin/manager-access", {
+      const response = await axios.get("/admin/manager-access", {
         headers: {
           authorization: `Bearer ${token}`,
         },
@@ -45,7 +45,7 @@ const ManagerHomePage = () => {
       setRatioLoading(true);
       setRatioError("");
 
-      const response = await axios.get("http://localhost:3001/dashboard", {
+      const response = await axios.get("/dashboard", {
         headers: {
           authorization: `Bearer ${token}`,
         },

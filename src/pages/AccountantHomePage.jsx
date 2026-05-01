@@ -30,7 +30,7 @@ const AccountantHomePage = () => {
     }
 
     try {
-      const response = await axios.get("http://localhost:3001/admin/accountant-access", {
+      const response = await axios.get("/admin/accountant-access", {
         headers: {
           authorization: `Bearer ${token}`,
         },
@@ -48,7 +48,7 @@ const AccountantHomePage = () => {
       setRatioLoading(true);
       setRatioError("");
 
-      const response = await axios.get("http://localhost:3001/dashboard", {
+      const response = await axios.get("/dashboard", {
         headers: {
           authorization: `Bearer ${token}`,
         },

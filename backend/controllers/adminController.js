@@ -60,7 +60,7 @@ await sendEmail({
     <p>Your account has been approved.</p>
     <p><strong>ID:</strong> ${userInfo.id}</p>
     <p><strong>Username:</strong> ${userInfo.UName}</p>
-    <a href="http://localhost:5173/login">CLICK HERE TO LOGIN</a>
+    <a href="/login">CLICK HERE TO LOGIN</a>
   `,
 });
       

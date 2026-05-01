@@ -41,7 +41,7 @@ export default function ForgotPassword() {
     }
 
     try {
-      const response = await axios.post("http://localhost:3001/account/check-creds", {
+      const response = await axios.post("/account/check-creds", {
         email,
         id: userId,
         securityQuestion: securityAnswer,
@@ -83,7 +83,7 @@ export default function ForgotPassword() {
 
     try {
       const response = await axios.put(
-        "http://localhost:3001/account/reset-password",
+        "/account/reset-password",
         {
           id: userId,
           password: password,

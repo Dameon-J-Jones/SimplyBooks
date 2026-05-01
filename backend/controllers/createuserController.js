@@ -98,7 +98,7 @@ export const createUser = async (req, res) => {
       html: `
         <h2>Account Created</h2>
         <p>${username} was created.</p>
-        <a href="http://localhost:5173/UserList">CLICK HERE TO APPORVE OR DENY USER</a>
+        <a href="/UserList">CLICK HERE TO APPORVE OR DENY USER</a>
       `,
     });
 
