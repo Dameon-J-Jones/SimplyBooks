@@ -11,17 +11,23 @@ import editUserRoutes from "./routes/editUserRoutes.js";
 import reportRoutes from "./routes/reportRoutes.js";
 import notificationRoutes from "./routes/notificationRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
+import path from "path";
+import { fileURLToPath } from "url";
  
 const app = express();
 app.use(express.json());
 
 const corsOptions = {
-  origin: "http://localhost:5173",
- // methods: ["GET","POST","PUT","DELETE","OPTIONS"],
- // allowedHeaders: ["Content-Type", "Authorization"],
+  origin: true,
   credentials: true
 };
 app.use(cors(corsOptions));
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const distPath = path.join(__dirname, "../dist");
+app.use(express.static(distPath));
 
 // Routes
 app.use("/users", createRoutes);
@@ -39,9 +45,13 @@ app.get("/test", (req, res) => {
   res.send("server works");
 });
 
+const PORT = process.env.PORT || 3001;
+
 // Connect to DB and start server
 pool.connect()
   .then(client => { console.log("Connected to Neon database"); client.release(); })
   .catch(err => console.error("Neon connection failed", err));
 
-app.listen(3001, () => console.log("Server running on port 3001"));
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
